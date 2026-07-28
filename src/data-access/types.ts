@@ -7,6 +7,7 @@ import type {
   TestConfig,
   TestResult,
   Topic,
+  TopicProgressRecord,
 } from '../types';
 
 export interface ExerciseFilter {
@@ -41,4 +42,8 @@ export interface ProgressStore {
 
   getProfile(): Promise<LearnerProfile | undefined>;
   saveProfile(profile: LearnerProfile): Promise<void>;
+
+  getTopicProgress(topicId: string): Promise<TopicProgressRecord | undefined>;
+  listTopicProgress(): Promise<TopicProgressRecord[]>;
+  saveTopicProgress(record: TopicProgressRecord): Promise<void>;
 }

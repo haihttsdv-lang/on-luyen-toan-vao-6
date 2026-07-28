@@ -1,17 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { localContentStore } from '../../data-access/local/content-store';
-import type { DifficultyLevel, Topic, TopicGroup } from '../../types';
+import { GROUP_LABELS } from '../../content/labels';
+import type { DifficultyLevel, Topic } from '../../types';
 import { useErrorLog } from './useErrorLog';
-
-const GROUP_LABELS: Record<TopicGroup, string> = {
-  SH: 'Số học và cấu tạo số',
-  PS: 'Phân số, số thập phân, tỉ số phần trăm',
-  DH: 'Dạng toán điển hình',
-  HH: 'Hình học',
-  DL: 'Đại lượng và đo lường',
-  TD: 'Toán tư duy và suy luận logic',
-};
 
 export function PracticeSetup() {
   const navigate = useNavigate();

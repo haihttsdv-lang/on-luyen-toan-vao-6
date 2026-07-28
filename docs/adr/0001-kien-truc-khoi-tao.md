@@ -42,4 +42,13 @@ Các giá trị này cần chủ dự án xác nhận lại trước khi coi là
 - Module Luyện tập: chọn chuyên đề, làm bài, chấm, xem lời giải từng bước, sổ lỗi.
 - Kiểm tra cấu trúc nội dung tự động (`content/content.test.ts`) — lớp kiểm chứng thứ nhất của Mục 13 GĐ7 cho phần đã xây; giáo án đầy đủ (GĐ6) và rà soát 3 lớp (GĐ7) còn lại cho các lượt sau.
 
-Còn lại: GĐ3 (Lý thuyết), GĐ4 (Thi thử/`test-generator`), GĐ5 (Hồ sơ/`mastery-engine`), GĐ6 (mở rộng nội dung đủ 57 chuyên đề), GĐ7 (rà soát nội dung 3 lớp đầy đủ).
+## Phạm vi đã triển khai (GĐ3)
+
+- `core/topic-progress`: logic thuần chuyển trạng thái chuyên đề sau quiz (FR-L04), ngưỡng đạt lấy từ `config/thresholds.ts` (`QUIZ_MASTERY_THRESHOLD = 0.8`) thay vì hardcode.
+- `data-access`: thêm bảng `topicProgress` (Dexie) + phương thức `getTopicProgress`/`listTopicProgress`/`saveTopicProgress` trên `ProgressStore`.
+- Module Lý thuyết (`modules/theory`): `TopicList` (FR-L01, nhóm theo 6 nhóm + nhãn mức độ/trạng thái), `TopicLesson` (FR-L02/L03, công thức nổi bật + ví dụ có lời giải từng bước + lỗi thường gặp), `QuickCheckQuiz` (FR-L04).
+- FR-L05: từ màn hình Luyện tập, khi làm sai hiển thị liên kết "Xem lại lý thuyết" mở bài học tương ứng ở tab mới.
+- Component dùng chung mới: `SolutionSteps` (tách từ `PracticeSession` để dùng lại ở `TopicLesson`), `MathRenderer` mở rộng thêm chế độ `display` cho khối công thức độc lập.
+- Đã xác nhận bằng trình duyệt thật: trạng thái chuyển đúng Chưa học → Đang học (khi mở bài) → Đã nắm (khi đạt ≥80% quiz), công thức render đúng bằng KaTeX ở độ rộng 400px, không rò rỉ LaTeX thô.
+
+Còn lại: GĐ4 (Thi thử/`test-generator`), GĐ5 (Hồ sơ/`mastery-engine`), GĐ6 (mở rộng nội dung đủ 57 chuyên đề), GĐ7 (rà soát nội dung 3 lớp đầy đủ).

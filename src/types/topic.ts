@@ -4,6 +4,16 @@ import type { NumericAnswerSpec } from '../core/answer-checker/types';
 
 export type TopicProgressStatus = 'not-started' | 'learning' | 'mastered';
 
+/** Trạng thái học lý thuyết của một chuyên đề (FR-L01, FR-L04) — khác với
+ * MasterySnapshot (mức thành thạo tính từ lịch sử luyện tập, GĐ5). */
+export interface TopicProgressRecord {
+  topicId: string;
+  status: TopicProgressStatus;
+  /** Điểm số lần làm quiz gần nhất, 0..1 */
+  lastQuizScore?: number;
+  updatedAt: string;
+}
+
 export interface WorkedExample {
   statement: string;
   steps: SolutionStep[];

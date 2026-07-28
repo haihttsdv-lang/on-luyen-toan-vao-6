@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MathRenderer } from '../../components/MathRenderer';
+import { SolutionSteps } from '../../components/SolutionSteps';
 import { checkNumericAnswer } from '../../core/answer-checker/check-numeric';
 import type { CheckResult } from '../../core/answer-checker/types';
 import { localContentStore } from '../../data-access/local/content-store';
@@ -164,23 +165,21 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
         <p className={result.status === 'correct' ? 'result-correct' : 'result-incorrect'}>{resultMessage(result)}</p>
       )}
 
+      {result && result.status !== 'correct' && result.status !== 'format_error' && (
+        <p>
+          Xem lại lý thuyết:{' '}
+          {current.topicIds.map((tid) => (
+            <a key={tid} href={`/ly-thuyet/${tid}`} target="_blank" rel="noopener noreferrer" style={{ marginRight: 8 }}>
+              {tid}
+            </a>
+          ))}
+        </p>
+      )}
+
       {showSolution && (
         <div>
           <h4>Lời giải chi tiết</h4>
-          <ol className="solution-steps">
-            {[...current.solutionSteps]
-              .sort((a, b) => a.order - b.order)
-              .map((step) => (
-                <li key={step.order}>
-                  <MathRenderer content={step.content} />
-                  {step.rationale && (
-                    <div style={{ fontSize: '0.85em', opacity: 0.75 }}>
-                      <MathRenderer content={step.rationale} />
-                    </div>
-                  )}
-                </li>
-              ))}
-          </ol>
+          <SolutionSteps steps={current.solutionSteps} />
           <button className="btn btn-primary" onClick={next}>
             Câu tiếp theo
           </button>

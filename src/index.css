@@ -47,6 +47,25 @@ body {
   overflow-x: auto;
 }
 
+.formula-box {
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border-left: 4px solid #2563eb;
+  background: color-mix(in srgb, #2563eb 8%, transparent);
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.topic-row {
+  cursor: pointer;
+  padding: 8px 0;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.topic-row:hover {
+  background: color-mix(in srgb, currentColor 5%, transparent);
+}
+
 .figure-box {
   max-width: 100%;
   overflow-x: auto;

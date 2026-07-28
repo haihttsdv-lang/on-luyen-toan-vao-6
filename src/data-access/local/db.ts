@@ -1,5 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie';
-import type { Attempt, ErrorLogEntry, LearnerProfile, TestResult } from '../../types';
+import type { Attempt, ErrorLogEntry, LearnerProfile, TestResult, TopicProgressRecord } from '../../types';
 
 export interface AttemptRecord extends Attempt {
   id?: number;
@@ -18,6 +18,7 @@ class VnAdvisorDB extends Dexie {
   errorLog!: EntityTable<ErrorLogEntry, 'exerciseId'>;
   testResults!: EntityTable<TestResultRecord, 'id'>;
   profile!: EntityTable<ProfileRecord, 'id'>;
+  topicProgress!: EntityTable<TopicProgressRecord, 'topicId'>;
 
   constructor() {
     super('vnadvisor-toan-vao-6');
@@ -26,6 +27,7 @@ class VnAdvisorDB extends Dexie {
       errorLog: 'exerciseId',
       testResults: '++id, configId, date',
       profile: 'id',
+      topicProgress: 'topicId',
     });
   }
 }

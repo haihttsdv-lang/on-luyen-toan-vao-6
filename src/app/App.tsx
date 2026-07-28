@@ -4,6 +4,8 @@ import { PlaceholderPage } from './PlaceholderPage';
 import { PracticeSetup } from '../modules/practice/PracticeSetup';
 import { PracticeSession } from '../modules/practice/PracticeSession';
 import { ErrorLogView } from '../modules/practice/ErrorLogView';
+import { TopicList } from '../modules/theory/TopicList';
+import { TopicLesson } from '../modules/theory/TopicLesson';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Trang chủ', end: true },
@@ -25,10 +27,8 @@ export default function App() {
       </nav>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route
-          path="/ly-thuyet"
-          element={<PlaceholderPage title="Lý thuyết" note="Module Lý thuyết sẽ được xây ở giai đoạn tiếp theo (GĐ3)." />}
-        />
+        <Route path="/ly-thuyet" element={<TopicList />} />
+        <Route path="/ly-thuyet/:topicId" element={<TopicLesson />} />
         <Route path="/luyen-tap" element={<PracticeSetup />} />
         <Route path="/luyen-tap/lam-bai" element={<PracticeSession mode="topics" />} />
         <Route path="/luyen-tap/so-loi" element={<ErrorLogView />} />
