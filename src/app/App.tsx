@@ -1,6 +1,5 @@
 import { NavLink, Route, Routes } from 'react-router-dom';
 import { HomePage } from './HomePage';
-import { PlaceholderPage } from './PlaceholderPage';
 import { PracticeSetup } from '../modules/practice/PracticeSetup';
 import { PracticeSession } from '../modules/practice/PracticeSession';
 import { ErrorLogView } from '../modules/practice/ErrorLogView';
@@ -9,6 +8,8 @@ import { TopicLesson } from '../modules/theory/TopicLesson';
 import { TestSetup } from '../modules/mock-test/TestSetup';
 import { TestSession } from '../modules/mock-test/TestSession';
 import { TestHistory } from '../modules/mock-test/TestHistory';
+import { ProfileHome } from '../modules/profile/ProfileHome';
+import { ParentOverview } from '../modules/profile/ParentOverview';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Trang chủ', icon: '🏠', end: true },
@@ -39,10 +40,9 @@ export default function App() {
         <Route path="/thi-thu" element={<TestSetup />} />
         <Route path="/thi-thu/lam-bai/:configId" element={<TestSession />} />
         <Route path="/thi-thu/lich-su" element={<TestHistory />} />
-        <Route
-          path="/ho-so"
-          element={<PlaceholderPage title="Hồ sơ & Lộ trình" note="Module Hồ sơ sẽ được xây ở giai đoạn tiếp theo (GĐ5)." />}
-        />
+        <Route path="/ho-so" element={<ProfileHome />} />
+        <Route path="/ho-so/phu-huynh" element={<ParentOverview />} />
+        <Route path="/ho-so/kiem-tra-dau-vao" element={<PracticeSession mode="diagnostic" />} />
       </Routes>
     </div>
   );

@@ -4,21 +4,39 @@ import { MathRenderer } from '../../components/MathRenderer';
 import { SolutionSteps } from '../../components/SolutionSteps';
 import { checkNumericAnswer } from '../../core/answer-checker/check-numeric';
 import type { CheckResult } from '../../core/answer-checker/types';
+import { DIAGNOSTIC_TEST_SIZE } from '../../config/thresholds';
+import { generateTest } from '../../core/test-generator/generate-test';
 import { localContentStore } from '../../data-access/local/content-store';
 import { localProgressStore } from '../../data-access/local/progress-store';
-import type { DifficultyLevel, Exercise } from '../../types';
+import type { AttemptContext, DifficultyLevel, Exercise, TestConfig } from '../../types';
 import { McqQuestion } from './McqQuestion';
 import { NumericQuestion } from './NumericQuestion';
 import { EssayQuestion } from './EssayQuestion';
 
 interface PracticeSessionProps {
-  mode: 'topics' | 'error-log';
+  mode: 'topics' | 'error-log' | 'diagnostic';
 }
 
 interface TopicsFilterState {
   topicIds?: string[];
   level?: DifficultyLevel;
 }
+
+/** Cấu hình bài kiểm tra đầu vào: ~30 câu phủ đều 6 nhóm chuyên đề (FR-H01). */
+const DIAGNOSTIC_CONFIG: TestConfig = {
+  id: 'DIAGNOSTIC',
+  label: 'Kiểm tra đầu vào',
+  totalQuestions: DIAGNOSTIC_TEST_SIZE,
+  durationMinutes: 40,
+  topicWeights: { SH: 1, PS: 1, DH: 1, HH: 1, DL: 1, TD: 1 },
+  answerTypeRatio: { mcq: 0.3, numeric: 0.7 },
+};
+
+const BACK_ROUTE: Record<PracticeSessionProps['mode'], string> = {
+  topics: '/luyen-tap',
+  'error-log': '/luyen-tap',
+  diagnostic: '/ho-so',
+};
 
 export function PracticeSession({ mode }: PracticeSessionProps) {
   const location = useLocation();
@@ -40,6 +58,9 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
         const log = await localProgressStore.getErrorLog();
         const found = await Promise.all(log.map((e) => localContentStore.getExercise(e.exerciseId)));
         list = found.filter((e): e is Exercise => e !== undefined);
+      } else if (mode === 'diagnostic') {
+        const pool = await localContentStore.listExercises();
+        list = generateTest(DIAGNOSTIC_CONFIG, pool).exercises;
       } else {
         const state = (location.state as TopicsFilterState | null) ?? {};
         list = await localContentStore.listExercises({
@@ -65,6 +86,7 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
   }, [mode]);
 
   const current = exercises[index];
+  const attemptContext: AttemptContext = mode === 'diagnostic' ? 'diagnostic' : 'practice';
 
   async function recordAttempt(correct: boolean, userAnswer: string) {
     if (!current) return;
@@ -74,7 +96,7 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
       userAnswer,
       timeSpentMs: 0,
       timestamp: new Date().toISOString(),
-      context: 'practice',
+      context: attemptContext,
     });
     setScore((s) => ({ correct: s.correct + (correct ? 1 : 0), total: s.total + 1 }));
   }
@@ -112,7 +134,7 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
     return (
       <div className="card">
         <p>Không có bài tập nào phù hợp.</p>
-        <button className="btn" onClick={() => navigate('/luyen-tap')}>
+        <button className="btn" onClick={() => navigate(BACK_ROUTE[mode])}>
           Quay lại
         </button>
       </div>
@@ -122,12 +144,13 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
   if (!current) {
     return (
       <div className="card">
-        <h3>Hoàn thành!</h3>
+        <h3>{mode === 'diagnostic' ? 'Đã hoàn thành bài kiểm tra đầu vào!' : 'Hoàn thành!'}</h3>
         <p>
           Bạn đã làm đúng {score.correct}/{score.total} câu.
         </p>
-        <button className="btn btn-primary" onClick={() => navigate('/luyen-tap')}>
-          Quay lại Luyện tập
+        {mode === 'diagnostic' && <p>Hồ sơ của bạn đã được cập nhật với bản đồ năng lực ban đầu.</p>}
+        <button className="btn btn-primary" onClick={() => navigate(BACK_ROUTE[mode])}>
+          {mode === 'diagnostic' ? 'Xem hồ sơ' : 'Quay lại Luyện tập'}
         </button>
       </div>
     );
