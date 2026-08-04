@@ -11,6 +11,15 @@ export const GROUP_LABELS: Record<TopicGroup, string> = {
 
 export const GROUP_ORDER: TopicGroup[] = ['SH', 'PS', 'DH', 'HH', 'DL', 'TD'];
 
+export const GROUP_ICONS: Record<TopicGroup, string> = {
+  SH: '🔢',
+  PS: '🍕',
+  DH: '🧩',
+  HH: '📐',
+  DL: '📏',
+  TD: '🧠',
+};
+
 export const LEVEL_LABELS: Record<DifficultyLevel, string> = {
   basic: 'Cơ bản',
   advanced: 'Nâng cao',
@@ -20,4 +29,10 @@ export const STATUS_LABELS: Record<TopicProgressStatus, string> = {
   'not-started': 'Chưa học',
   learning: 'Đang học',
   mastered: 'Đã nắm',
+};
+
+export const STATUS_ICONS: Record<TopicProgressStatus, string> = {
+  'not-started': '🔒',
+  learning: '⚡',
+  mastered: '⭐',
 };

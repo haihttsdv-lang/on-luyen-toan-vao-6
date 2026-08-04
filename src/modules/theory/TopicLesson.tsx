@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { MathRenderer } from '../../components/MathRenderer';
 import { SolutionSteps } from '../../components/SolutionSteps';
 import { QUIZ_MASTERY_THRESHOLD } from '../../config/thresholds';
-import { LEVEL_LABELS, STATUS_LABELS } from '../../content/labels';
+import { LEVEL_LABELS, STATUS_ICONS, STATUS_LABELS } from '../../content/labels';
 import { applyQuizResult } from '../../core/topic-progress/apply-quiz-result';
 import { localContentStore } from '../../data-access/local/content-store';
 import { localProgressStore } from '../../data-access/local/progress-store';
@@ -90,7 +90,10 @@ export function TopicLesson() {
           <span className="topic-pill">{topic.id}</span> {topic.title}
         </h2>
         <p>
-          Mức độ: {LEVEL_LABELS[topic.level]} — Trạng thái: <strong>{STATUS_LABELS[status]}</strong>
+          Mức độ: {LEVEL_LABELS[topic.level]} — Trạng thái:{' '}
+          <strong>
+            {STATUS_ICONS[status]} {STATUS_LABELS[status]}
+          </strong>
         </p>
 
         <p>

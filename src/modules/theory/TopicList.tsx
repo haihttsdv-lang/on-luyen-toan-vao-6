@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { localContentStore } from '../../data-access/local/content-store';
-import { GROUP_LABELS, GROUP_ORDER, LEVEL_LABELS, STATUS_LABELS } from '../../content/labels';
+import { GROUP_ICONS, GROUP_LABELS, GROUP_ORDER, LEVEL_LABELS, STATUS_ICONS, STATUS_LABELS } from '../../content/labels';
 import type { Topic } from '../../types';
 import { useTopicProgressList } from './useTopicProgress';
 
@@ -29,12 +29,14 @@ export function TopicList() {
         return (
           <div key={group} style={{ marginBottom: 16 }}>
             <h3>
-              {group} — {GROUP_LABELS[group]}
+              {GROUP_ICONS[group]} {group} — {GROUP_LABELS[group]}
             </h3>
             {groupTopics.map((t) => (
               <div key={t.id} className="topic-row" onClick={() => navigate(`/ly-thuyet/${t.id}`)}>
                 <span className="topic-pill">{t.id}</span> {t.title} — <em>{LEVEL_LABELS[t.level]}</em> —{' '}
-                <strong>{STATUS_LABELS[statusOf(t.id)]}</strong>
+                <strong>
+                  {STATUS_ICONS[statusOf(t.id)]} {STATUS_LABELS[statusOf(t.id)]}
+                </strong>
               </div>
             ))}
           </div>

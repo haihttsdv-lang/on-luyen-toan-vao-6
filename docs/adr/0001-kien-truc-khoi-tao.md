@@ -51,4 +51,27 @@ Các giá trị này cần chủ dự án xác nhận lại trước khi coi là
 - Component dùng chung mới: `SolutionSteps` (tách từ `PracticeSession` để dùng lại ở `TopicLesson`), `MathRenderer` mở rộng thêm chế độ `display` cho khối công thức độc lập.
 - Đã xác nhận bằng trình duyệt thật: trạng thái chuyển đúng Chưa học → Đang học (khi mở bài) → Đã nắm (khi đạt ≥80% quiz), công thức render đúng bằng KaTeX ở độ rộng 400px, không rò rỉ LaTeX thô.
 
-Còn lại: GĐ4 (Thi thử/`test-generator`), GĐ5 (Hồ sơ/`mastery-engine`), GĐ6 (mở rộng nội dung đủ 57 chuyên đề), GĐ7 (rà soát nội dung 3 lớp đầy đủ).
+## Phạm vi đã triển khai (GĐ4)
+
+- `core/test-generator`: `allocate.ts` (phân bổ nguyên theo trọng số — phương pháp số dư lớn nhất) + `generate-test.ts` (sinh đề theo `topicWeights`/`answerTypeRatio` của `TestConfig`, FR-T01/T02). Khi ngân hàng nội dung chưa đủ (hiện chỉ có 3 chuyên đề mẫu), trả về đề ngắn hơn kèm `shortfall` thay vì lỗi — thiết kế đúng cho cả lúc nội dung đầy đủ (GĐ6) lẫn giai đoạn nội dung mẫu hiện tại.
+- Module Thi thử (`modules/mock-test`): `TestSetup` (FR-T01), `TestSession` (sinh đề, đồng hồ đếm ngược tự nộp khi hết giờ + cảnh báo dưới 5 phút — FR-T03, bảng số thứ tự câu hỏi di chuyển tự do/đánh dấu xem lại — FR-T04, không hiện đáp án khi đang thi — FR-T05, chấm tự động `mcq`/`numeric` khi nộp — FR-T06), `TestResultView` (điểm tổng, điểm theo nhóm chuyên đề, xem lại từng câu kèm lời giải, tự luận hiện lời giải mẫu + tiêu chí tự chấm để đối chiếu — FR-T07), `TestHistory` (lưu lịch sử + biểu đồ xu hướng điểm — FR-T08).
+- Mỗi câu `mcq`/`numeric` trong bài thi được ghi thành `Attempt` với `context: 'test'`, tái sử dụng được cho `mastery-engine` ở GĐ5.
+- Đã xác nhận bằng trình duyệt thật: sinh đề đúng cấu hình (báo shortfall khi thiếu nội dung), không rò rỉ đáp án/phản hồi đúng-sai trong lúc thi, đồng hồ đếm ngược và bảng số thứ tự hoạt động đúng, nộp bài có xác nhận, trang kết quả và lịch sử hiển thị đúng.
+
+## Mở rộng nội dung đủ 57 chuyên đề (GĐ6, ngoài thứ tự Mục 13 — theo yêu cầu trực tiếp của người dùng)
+
+- Bổ sung 54 chuyên đề còn thiếu, tổ chức theo **nhóm** (đúng cấu trúc thư mục đề xuất ở Mục 12 URD: `content/topics/{sh,ps-more,dh-more,hh-more,dl,td}.ts`, tương tự cho `exercises/`) thay vì mỗi chuyên đề một file như 3 chuyên đề mẫu ban đầu — hiệu quả hơn ở quy mô 57 chuyên đề.
+- Khối lượng: 57/57 chuyên đề có đủ lý thuyết (giải thích + công thức + 2 ví dụ có lời giải từng bước + lỗi thường gặp + 3 câu kiểm tra nhanh); 193 bài tập (170 `numeric`, 18 `mcq`, 5 `essay`). Ưu tiên số lượng bài tập cao hơn (4/chuyên đề) cho nhóm DH và các mã được URD Mục 4.7 liệt kê ưu tiên (DH-01→03, DH-06→09, PS-09, HH-03/04/09, SH-04/05/09); các chuyên đề còn lại 3/chuyên đề. Đây là mức "đủ rộng, chưa đủ sâu" — thấp hơn mục tiêu 12–15 bài/chuyên đề của Mục 4.7, cần bổ sung thêm bài tập dần ở các lượt sau.
+- **Chưa hoàn thành GĐ7 (rà soát nội dung 3 lớp) cho nội dung mới này.** Đã làm: lớp 1 — kiểm tra cấu trúc tự động (`content/content.test.ts`: đủ công thức/ví dụ/quickCheck, mcq đủ 4 lựa chọn, numeric parse được, essay có rubric) và tự kiểm tra thủ công từng phép tính khi soạn. **Chưa làm**: lớp 2 (giải lại độc lập ở phiên không mang lịch sử soạn đề) và lớp 3 (rà soát bởi giáo viên Toán tiểu học) — đây là rủi ro cao nhất của cả dự án theo Mục 16 URD, bắt buộc thực hiện trước khi đưa nội dung này vào sử dụng thật với học sinh.
+
+## Thiết kế lại giao diện theo phong cách gaming (theo yêu cầu trực tiếp của người dùng)
+
+- Cam kết một giao diện tối (dark theme) cố định làm bản sắc riêng của ứng dụng, không chuyển theo `prefers-color-scheme` của hệ điều hành nữa (`color-scheme: dark` ở `:root`) — quyết định thiết kế có chủ đích, phù hợp thẩm mỹ game hơn là hỗ trợ cả hai chế độ sáng/tối.
+- Bảng màu: nền xanh đen sâu, viền/nút phát sáng neon cyan (`#00e5ff`) và tím (`#a855f7`), trạng thái đúng/sai dùng xanh lá/đỏ neon có `text-shadow` phát sáng.
+- Nút bấm kiểu game: hiệu ứng nổi khối 3D (box-shadow tạo cạnh, nhấn xuống khi `:active`), toàn bộ chữ hoa + tăng letter-spacing.
+- Thanh điều hướng kiểu HUD: dính đầu trang, mục đang chọn phát sáng, icon riêng cho từng mục (📚 Lý thuyết, ⚔️ Luyện tập, 🏆 Thi thử...).
+- Icon riêng cho 6 nhóm chuyên đề (🔢🍕🧩📐📏🧠) và 3 trạng thái học (🔒 Chưa học/⚡ Đang học/⭐ Đã nắm) — `content/labels.ts`.
+- Trang chủ đổi thành dạng "menu game" với 3 thẻ nhiệm vụ dẫn thẳng tới 3 module chính.
+- Đã kiểm tra: KaTeX kế thừa đúng màu chữ sáng trên nền tối (không cần cấu hình riêng, do KaTeX dùng `currentColor`), biểu đồ xu hướng điểm thi thử (`TestHistory`) chuyển từ theo dõi `prefers-color-scheme` sang dùng cố định bảng màu tối khớp giao diện chung, không còn console error.
+
+Còn lại: GĐ5 (Hồ sơ/`mastery-engine`), GĐ7 lớp 2+3 cho nội dung mới (rà soát độc lập + giáo viên), mở rộng bài tập lên 12–15/chuyên đề theo mục tiêu đầy đủ Mục 4.7.
