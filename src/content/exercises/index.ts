@@ -8,6 +8,16 @@ import { dhMoreExercises } from './dh-more';
 import { hhMoreExercises } from './hh-more';
 import { dlExercises } from './dl';
 import { tdExercises } from './td';
+import { dhPriorityMoreExercises } from './dh-priority-more';
+import { psPriorityMoreExercises } from './ps-priority-more';
+import { hhPriorityMoreExercises } from './hh-priority-more';
+import { shPriorityMoreExercises } from './sh-priority-more';
+import { shExpandExercises } from './sh-expand';
+import { psExpandExercises } from './ps-expand';
+import { dhExpandExercises } from './dh-expand';
+import { hhExpandExercises } from './hh-expand';
+import { dlExpandExercises } from './dl-expand';
+import { tdExpandExercises } from './td-expand';
 
 export const allExercises: Exercise[] = [
   ...dh01Exercises,
@@ -19,6 +29,16 @@ export const allExercises: Exercise[] = [
   ...hhMoreExercises,
   ...dlExercises,
   ...tdExercises,
+  ...dhPriorityMoreExercises,
+  ...psPriorityMoreExercises,
+  ...hhPriorityMoreExercises,
+  ...shPriorityMoreExercises,
+  ...shExpandExercises,
+  ...psExpandExercises,
+  ...dhExpandExercises,
+  ...hhExpandExercises,
+  ...dlExpandExercises,
+  ...tdExpandExercises,
 ];
 
 export { dh01Exercises, ps01Exercises, hh02Exercises };

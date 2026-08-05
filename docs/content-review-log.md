@@ -32,3 +32,37 @@ Vài điểm được các agent tự ghi chú khi giải (không phải lỗi, 
 ### Lớp 3 — Rà soát bởi giáo viên Toán tiểu học
 
 **Chưa thực hiện.** Đây là bước bắt buộc cuối cùng theo Mục 13 URD ("không bỏ qua bước này ngay cả khi hai lớp trên đã sạch") và cần một giáo viên Toán tiểu học thật — không thể thực hiện bằng AI. **Bắt buộc hoàn thành lớp này trước khi đưa nội dung vào sử dụng thật với học sinh.**
+
+## 2026-08-05 (tiếp) — Lớp 2 cho 111 bài tập mới bổ sung
+
+**Phạm vi**: 111 bài tập mới thêm vào 12 chuyên đề ưu tiên theo Mục 4.7 URD (DH-01→03, DH-06→09, PS-09, HH-03/04/09, SH-04/05/09), đưa các chuyên đề này lên 12 bài/chuyên đề.
+
+**Phương pháp**: giống hệt lần trước — 2 agent con độc lập (một phiên riêng cho 54 bài nhóm DH, một phiên riêng cho 57 bài còn lại PS/HH/SH), tự giải lại từ đầu, đối chiếu tự động qua `core/answer-checker`.
+
+**Kết quả: 111/111 bài khớp hoàn toàn — 0 điểm lệch.** Cả hai agent đều `confidence: "high"` toàn bộ.
+
+Điểm được agent tự ghi chú khi giải (đã xác nhận đúng, không phải lỗi):
+- DH-06-EX11/EX12 (toán tuổi có lập phương trình theo thời gian): kiểm tra lại bằng cách thay ngược đáp số vào đề, khớp.
+- SH-04-EX7/EX8/EX11/EX12 (tìm số 2 chữ số qua phương trình $9t+d=k$): kiểm tra miền hợp lệ $1\\le t\\le9$, $0\\le d\\le9$, đều đúng một nghiệm duy nhất.
+- SH-04-EX11: đề hỏi riêng "chữ số hàng đơn vị" (đáp số 2) chứ không phải cả số — đã trả lời đúng theo đúng câu hỏi.
+- SH-05 (nhiều bài): xác nhận các ràng buộc "khác 0"/"lớn nhất"/"nhỏ nhất" trong đề loại trừ đúng các nghiệm thừa, mỗi bài chỉ còn một đáp số hợp lệ.
+
+**Tổng số bài đã qua lớp 2 tính đến thời điểm này: 304/304 (193 bài đợt đầu + 111 bài đợt này) — 0 điểm lệch trên toàn bộ ngân hàng nội dung hiện có.**
+
+## 2026-08-05 (tiếp) — Lớp 2 cho 166 bài tập mở rộng 43 chuyên đề còn lại (nâng lên 6–8 bài/chuyên đề)
+
+**Phạm vi**: 166 bài tập mới (SH-expand 28, PS-expand 34, DH-expand 28, HH-expand 28, DL-expand 24, TD-expand 24) thêm vào 43 chuyên đề không thuộc nhóm ưu tiên Mục 4.7, đưa các chuyên đề này từ 3 lên 6–8 bài/chuyên đề (bước trung gian trước khi đạt mục tiêu 12–15 bài/chuyên đề của URD).
+
+**Phương pháp**: 6 agent con độc lập, mỗi agent một phiên hoàn toàn mới không mang lịch sử soạn đề, phụ trách một nhóm chuyên đề (SH/PS/DH/HH/DL/TD), tự giải lại từ đầu. Đối chiếu tự động 162 bài `numeric`/`mcq` qua `core/answer-checker`; đối chiếu thủ công 4 bài `essay` (TD-06-EX4→EX7).
+
+**Kết quả: 162/162 bài numeric/mcq khớp hoàn toàn qua bộ chấm tự động — 0 điểm lệch.** 4/4 bài essay: kết luận cuối cùng của agent khớp với lời giải mẫu.
+
+Phát hiện và đã xử lý trong lần rà soát này:
+- **TD-06-EX5** (dấu hiệu chia hết cho 3, số 2145): agent chỉ ra `solutionSteps` gốc chỉ *nhắc lại* quy tắc như điều đã biết rồi kiểm tra ví dụ, chưa thực sự *chứng minh* vì sao quy tắc đúng — không khớp yêu cầu đề bài ("giải thích vì sao"). Kết luận cuối (2145 chia hết cho 3) vẫn đúng, không phải lỗi đáp số. **Đã sửa**: viết lại `solutionSteps`/`modelSolution` bằng lập luận đầy đủ dựa trên $10\equiv1\pmod3$ (phân tích $1000=999+1$, $100=99+1$, $10=9+1$, các số $999,99,9$ đều chia hết cho 3).
+- **TD-06-EX6** (2 số tự nhiên liên tiếp luôn có 1 chẵn 1 lẻ): agent nhận xét lập luận gốc ("xen kẽ nhau") không giải thích cơ chế. **Đã sửa**: viết lại bằng chứng minh 2 trường hợp ($n=2k$ và $n=2k+1$), nhất quán với độ chặt chẽ của TD-06-EX4/EX7.
+
+Điểm khác được agent tự ghi chú (đã xác nhận đúng, không phải lỗi):
+- DL-04-EX7 ("Đổi 150 phút sang giờ và phút. Nhập số giờ."): agent lưu ý đề chỉ hỏi riêng phần giờ (đáp số 2, không phải 2,5 hay 150) — khớp đúng với `acceptedValues` đã lưu, chỉ là điểm cần rõ ràng về định dạng nhập liệu.
+- SH-01-EX6, PS-08-EX5/EX7, PS-04-EX6, PS-07-EX5, DH-11-EX5/DH-14-EX5, HH (dùng π=3,14): agent tự kiểm chứng chéo, đều khớp lời giải mẫu, không có vấn đề.
+
+**Tổng số bài đã qua lớp 2 tính đến thời điểm này: 470/470 (304 bài các đợt trước + 166 bài đợt này) — 0 điểm lệch trên toàn bộ ngân hàng nội dung hiện có.**

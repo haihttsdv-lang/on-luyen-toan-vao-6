@@ -1,0 +1,86 @@
+import type { Exercise } from '../../types';
+
+/** Bổ sung bài tập cho PS-09 (ưu tiên theo Mục 4.7 URD), hướng tới 12–15 bài/chuyên đề. */
+export const psPriorityMoreExercises: Exercise[] = [
+  {
+    id: 'PS-09-EX5',
+    topicIds: ['PS-09'],
+    level: 'basic',
+    answerType: 'numeric',
+    statement: 'Một lớp có 45 học sinh, có 9 học sinh đạt loại giỏi. Tính tỉ số % học sinh giỏi (nhập số).',
+    solutionSteps: [{ order: 1, content: '$9:45\\times100=20$.', rationale: 'Áp dụng công thức tìm tỉ số phần trăm của hai số.' }],
+    numeric: { kind: 'single', acceptedValues: ['20'], tolerance: 0, isInteger: true },
+  },
+  {
+    id: 'PS-09-EX6',
+    topicIds: ['PS-09'],
+    level: 'basic',
+    answerType: 'numeric',
+    statement: 'Một kho có 800kg đường, đã bán 35% số đường. Tính số kg đường đã bán.',
+    solutionSteps: [{ order: 1, content: '$800\\times35:100=280$.', rationale: 'Áp dụng công thức tìm giá trị phần trăm của một số.' }],
+    numeric: { kind: 'single', acceptedValues: ['280'], tolerance: 0, isInteger: true, unit: 'kg' },
+  },
+  {
+    id: 'PS-09-EX7',
+    topicIds: ['PS-09'],
+    level: 'basic',
+    answerType: 'numeric',
+    statement: 'Biết 25% của một số là 45. Tìm số đó.',
+    solutionSteps: [{ order: 1, content: '$45:25\\times100=180$.', rationale: 'Áp dụng công thức tìm số biết giá trị phần trăm của nó.' }],
+    numeric: { kind: 'single', acceptedValues: ['180'], tolerance: 0, isInteger: true },
+  },
+  {
+    id: 'PS-09-EX8',
+    topicIds: ['PS-09'],
+    level: 'advanced',
+    answerType: 'numeric',
+    statement: 'Một cửa hàng có 250 sản phẩm, trong đó 18% bị lỗi. Tính số sản phẩm không bị lỗi.',
+    solutionSteps: [
+      { order: 1, content: 'Số sản phẩm lỗi $=250\\times18:100=45$.', rationale: 'Áp dụng công thức tìm giá trị phần trăm.' },
+      { order: 2, content: 'Số sản phẩm không lỗi $=250-45=205$.', rationale: 'Lấy tổng trừ số lỗi.' },
+    ],
+    numeric: { kind: 'single', acceptedValues: ['205'], tolerance: 0, isInteger: true },
+  },
+  {
+    id: 'PS-09-EX9',
+    topicIds: ['PS-09'],
+    level: 'basic',
+    answerType: 'numeric',
+    statement: 'Một đội bóng đá thi đấu 20 trận, thắng 16 trận. Tính tỉ số % số trận thắng.',
+    solutionSteps: [{ order: 1, content: '$16:20\\times100=80$.', rationale: 'Áp dụng công thức tìm tỉ số phần trăm của hai số.' }],
+    numeric: { kind: 'single', acceptedValues: ['80'], tolerance: 0, isInteger: true },
+  },
+  {
+    id: 'PS-09-EX10',
+    topicIds: ['PS-09'],
+    level: 'basic',
+    answerType: 'mcq',
+    statement: 'Biết 40% của một số là 60. Số đó là bao nhiêu?',
+    solutionSteps: [{ order: 1, content: '$60:40\\times100=150$.', rationale: 'Áp dụng công thức tìm số biết giá trị phần trăm.' }],
+    mcq: { options: ['120', '135', '150', '165'], answerIndex: 2 },
+  },
+  {
+    id: 'PS-09-EX11',
+    topicIds: ['PS-09'],
+    level: 'advanced',
+    answerType: 'numeric',
+    statement: 'Một trường có 600 học sinh, 45% là học sinh nữ. Tính số học sinh nam.',
+    solutionSteps: [
+      { order: 1, content: 'Số học sinh nữ $=600\\times45:100=270$.', rationale: 'Áp dụng công thức tìm giá trị phần trăm.' },
+      { order: 2, content: 'Số học sinh nam $=600-270=330$.', rationale: 'Lấy tổng trừ số nữ.' },
+    ],
+    numeric: { kind: 'single', acceptedValues: ['330'], tolerance: 0, isInteger: true },
+  },
+  {
+    id: 'PS-09-EX12',
+    topicIds: ['PS-09'],
+    level: 'advanced',
+    answerType: 'numeric',
+    statement: 'Giá gốc một món hàng là 500 000đ. Sau khi giảm giá, giá bán còn 400 000đ. Tính tỉ số % đã giảm.',
+    solutionSteps: [
+      { order: 1, content: 'Số tiền giảm $=500\\,000-400\\,000=100\\,000$đ.', rationale: 'Lấy giá gốc trừ giá bán.' },
+      { order: 2, content: 'Tỉ số % giảm $=100\\,000:500\\,000\\times100=20$.', rationale: 'Áp dụng công thức tìm tỉ số phần trăm, tính trên giá gốc.' },
+    ],
+    numeric: { kind: 'single', acceptedValues: ['20'], tolerance: 0, isInteger: true },
+  },
+];
