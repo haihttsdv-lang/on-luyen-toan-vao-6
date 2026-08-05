@@ -62,7 +62,10 @@ Các giá trị này cần chủ dự án xác nhận lại trước khi coi là
 
 - Bổ sung 54 chuyên đề còn thiếu, tổ chức theo **nhóm** (đúng cấu trúc thư mục đề xuất ở Mục 12 URD: `content/topics/{sh,ps-more,dh-more,hh-more,dl,td}.ts`, tương tự cho `exercises/`) thay vì mỗi chuyên đề một file như 3 chuyên đề mẫu ban đầu — hiệu quả hơn ở quy mô 57 chuyên đề.
 - Khối lượng: 57/57 chuyên đề có đủ lý thuyết (giải thích + công thức + 2 ví dụ có lời giải từng bước + lỗi thường gặp + 3 câu kiểm tra nhanh); 193 bài tập (170 `numeric`, 18 `mcq`, 5 `essay`). Ưu tiên số lượng bài tập cao hơn (4/chuyên đề) cho nhóm DH và các mã được URD Mục 4.7 liệt kê ưu tiên (DH-01→03, DH-06→09, PS-09, HH-03/04/09, SH-04/05/09); các chuyên đề còn lại 3/chuyên đề. Đây là mức "đủ rộng, chưa đủ sâu" — thấp hơn mục tiêu 12–15 bài/chuyên đề của Mục 4.7, cần bổ sung thêm bài tập dần ở các lượt sau.
-- **Chưa hoàn thành GĐ7 (rà soát nội dung 3 lớp) cho nội dung mới này.** Đã làm: lớp 1 — kiểm tra cấu trúc tự động (`content/content.test.ts`: đủ công thức/ví dụ/quickCheck, mcq đủ 4 lựa chọn, numeric parse được, essay có rubric) và tự kiểm tra thủ công từng phép tính khi soạn. **Chưa làm**: lớp 2 (giải lại độc lập ở phiên không mang lịch sử soạn đề) và lớp 3 (rà soát bởi giáo viên Toán tiểu học) — đây là rủi ro cao nhất của cả dự án theo Mục 16 URD, bắt buộc thực hiện trước khi đưa nội dung này vào sử dụng thật với học sinh.
+- **GĐ7 (rà soát nội dung 3 lớp) — cập nhật 2026-08-05: đã hoàn thành lớp 1 và lớp 2, còn lớp 3.** Chi tiết đầy đủ ở [`docs/content-review-log.md`](../content-review-log.md).
+  - Lớp 1 (tự động): `content/content.test.ts` — đạt, 0 lỗi cấu trúc.
+  - Lớp 2 (giải lại độc lập): triển khai bằng 6 agent con chạy trong phiên hoàn toàn tách biệt (không mang lịch sử soạn đề), mỗi agent giải lại độc lập một nhóm chuyên đề, đối chiếu tự động qua `core/answer-checker` (bài numeric/mcq) và thủ công (bài essay). **Kết quả: 193/193 bài khớp, 0 điểm lệch.**
+  - Lớp 3 (giáo viên Toán tiểu học rà soát): **chưa làm — cần con người thật, không thể thay thế bằng AI.** Đây vẫn là điều kiện bắt buộc trước khi dùng thật với học sinh theo đúng Mục 13 URD ("không bỏ qua bước này ngay cả khi hai lớp trên đã sạch").
 
 ## Thiết kế lại giao diện theo phong cách gaming (theo yêu cầu trực tiếp của người dùng)
 
