@@ -6,6 +6,7 @@ import { ErrorLogView } from '../modules/practice/ErrorLogView';
 import { TopicList } from '../modules/theory/TopicList';
 import { TopicLesson } from '../modules/theory/TopicLesson';
 import { TestSetup } from '../modules/mock-test/TestSetup';
+import { TestCustomSetup } from '../modules/mock-test/TestCustomSetup';
 import { TestSession } from '../modules/mock-test/TestSession';
 import { TestHistory } from '../modules/mock-test/TestHistory';
 import { ProfileHome } from '../modules/profile/ProfileHome';
@@ -38,6 +39,7 @@ export default function App() {
         <Route path="/luyen-tap/so-loi" element={<ErrorLogView />} />
         <Route path="/luyen-tap/luyen-lai" element={<PracticeSession mode="error-log" />} />
         <Route path="/thi-thu" element={<TestSetup />} />
+        <Route path="/thi-thu/tao-de" element={<TestCustomSetup />} />
         <Route path="/thi-thu/lam-bai/:configId" element={<TestSession />} />
         <Route path="/thi-thu/lich-su" element={<TestHistory />} />
         <Route path="/ho-so" element={<ProfileHome />} />

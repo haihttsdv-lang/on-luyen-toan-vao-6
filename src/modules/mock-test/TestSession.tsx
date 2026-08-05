@@ -46,6 +46,29 @@ export function TestSession() {
 
     async function load() {
       if (!configId) return;
+
+      if (configId.startsWith('custom-')) {
+        const raw = sessionStorage.getItem(`custom-test:${configId}`);
+        if (!raw) {
+          if (!cancelled) setPhase('no-content');
+          return;
+        }
+        const { config: cfg, exercises: exs } = JSON.parse(raw) as { config: TestConfig; exercises: Exercise[] };
+        if (cancelled) return;
+        if (exs.length === 0) {
+          setPhase('no-content');
+          return;
+        }
+        setConfig(cfg);
+        setExercises(exs);
+        setShortfall(Math.max(0, cfg.totalQuestions - exs.length));
+        const now = Date.now();
+        setStartTime(now);
+        setExamEndTime(now + cfg.durationMinutes * 60_000);
+        setPhase('in-progress');
+        return;
+      }
+
       const cfg = await localContentStore.getTestConfig(configId);
       if (!cfg) {
         if (!cancelled) setPhase('no-content');

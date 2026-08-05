@@ -20,11 +20,11 @@ export function ScoreTrendChart({ points, ariaLabel }: ScoreTrendChartProps) {
     <div className="viz-root figure-box">
       <style>{`
         .viz-root {
-          color-scheme: dark;
-          --viz-grid: #2c3350;
-          --viz-axis: #3f4870;
-          --viz-muted: #a6b1c9;
-          --viz-series-1: #00e5ff;
+          color-scheme: light;
+          --viz-grid: #e2e8f0;
+          --viz-axis: #94a3b8;
+          --viz-muted: #64748b;
+          --viz-series-1: #0ea5e9;
         }
       `}</style>
       <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={ariaLabel}>

@@ -36,6 +36,13 @@ export function TestSetup() {
         </div>
       ))}
       <div className="card">
+        <h3>Tạo đề tùy chỉnh</h3>
+        <p>Tự chọn chuyên đề, số câu và thời gian để tạo một đề thi thử mới ngay từ ngân hàng bài luyện tập.</p>
+        <button className="btn btn-primary" onClick={() => navigate('/thi-thu/tao-de')}>
+          Tạo đề mới
+        </button>
+      </div>
+      <div className="card">
         <button className="btn" onClick={() => navigate('/thi-thu/lich-su')}>
           Xem lịch sử thi thử
         </button>

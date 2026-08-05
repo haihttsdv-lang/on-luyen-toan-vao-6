@@ -9,9 +9,9 @@ interface CompetencyMapProps {
 }
 
 const LEVEL_COLOR: Record<MasteryLevel, string> = {
-  'needs-review': '#ff3860',
-  improving: '#ffb020',
-  mastered: '#39ff88',
+  'needs-review': '#e11d48',
+  improving: '#f59e0b',
+  mastered: '#16a34a',
 };
 
 const LEVEL_LABEL: Record<MasteryLevel, string> = {
@@ -20,7 +20,7 @@ const LEVEL_LABEL: Record<MasteryLevel, string> = {
   mastered: 'Thành thạo',
 };
 
-const NO_DATA_COLOR = '#3f4870';
+const NO_DATA_COLOR = '#94a3b8';
 
 /** Bản đồ năng lực trực quan theo 6 nhóm chuyên đề (FR-H05). */
 export function CompetencyMap({ topics, masteryByTopic }: CompetencyMapProps) {
@@ -60,10 +60,10 @@ export function CompetencyMap({ topics, masteryByTopic }: CompetencyMapProps) {
                       borderRadius: 999,
                       border: 'none',
                       background: color,
-                      color: '#001014',
+                      color: '#fff',
                       fontWeight: 700,
                       fontSize: '0.78em',
-                      boxShadow: `0 0 8px ${color}88`,
+                      boxShadow: `0 2px 6px ${color}55`,
                     }}
                   >
                     {t.id}
