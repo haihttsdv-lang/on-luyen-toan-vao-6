@@ -98,7 +98,8 @@ h4 {
 
 .app-nav {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
   gap: 6px;
   padding: 10px;
   margin-bottom: 18px;
@@ -110,6 +111,12 @@ h4 {
   z-index: 10;
   backdrop-filter: blur(6px);
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+.app-nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .app-nav a {
@@ -347,4 +354,176 @@ td,
 th {
   padding: 6px 8px;
   border-bottom: 1px solid rgba(15, 23, 42, 0.1);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+/* FR-P08: trang phân tích lỗi sai theo chuyên đề/loại lỗi */
+.error-bar-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) 2fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 4px;
+  border-radius: 8px;
+}
+
+.error-bar-row.error-bar-clickable {
+  cursor: pointer;
+}
+
+.error-bar-row.error-bar-clickable:hover {
+  background: rgba(14, 165, 233, 0.06);
+}
+
+.error-bar-label {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.error-bar-track {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--bg-panel-soft);
+  border: 1px solid var(--border-glow);
+  overflow: hidden;
+}
+
+.error-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-red), var(--accent-orange));
+  border-radius: 999px;
+}
+
+.error-bar-count {
+  font-weight: 800;
+  color: var(--text-primary);
+  font-size: 0.85em;
+  text-align: right;
+  min-width: 22px;
+}
+
+/* FR-P08: chọn loại lỗi sau khi làm sai */
+.error-type-picker {
+  margin: 14px 0;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--bg-panel-soft);
+  border: 1px dashed var(--border-glow);
+}
+
+.error-type-picker p {
+  margin: 0 0 8px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-size: 0.88em;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip-btn {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 2px solid var(--border-glow);
+  background: var(--bg-panel);
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 0.78em;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.chip-btn:hover {
+  background: rgba(14, 165, 233, 0.12);
+  color: var(--accent-cyan-deep);
+}
+
+/* UX-01/UX-02: thanh tab cố định ở đáy màn hình cho di động */
+.bottom-tab-bar {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .app-shell {
+    padding-bottom: 78px;
+  }
+
+  .app-nav-links {
+    display: none;
+  }
+
+  .app-nav {
+    justify-content: flex-end;
+  }
+
+  .bottom-tab-bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    background: var(--bg-panel);
+    border-top: 1px solid var(--border-glow);
+    box-shadow: 0 -6px 18px rgba(15, 23, 42, 0.1);
+    padding: 6px 2px calc(6px + env(safe-area-inset-bottom));
+  }
+
+  .bottom-tab-bar a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 2px;
+    border-radius: 10px;
+    color: var(--text-secondary);
+    font-weight: 700;
+    font-size: 0.62em;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .bottom-tab-bar a span[aria-hidden] {
+    font-size: 1.25em;
+  }
+
+  .bottom-tab-bar a.active {
+    color: var(--accent-orange-deep);
+    background: rgba(255, 122, 26, 0.12);
+  }
+}
+
+/* UX-17: bản in cho phụ huynh — chỉ còn nội dung báo cáo trên giấy */
+@media print {
+  .app-nav,
+  .bottom-tab-bar,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .app-shell {
+    max-width: none;
+    padding: 0;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    break-inside: avoid;
+  }
 }

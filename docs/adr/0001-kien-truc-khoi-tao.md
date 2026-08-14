@@ -225,3 +225,26 @@ Trước đợt này, chỉ TD-06 (chuyên đề thuần "lập luận/chứng m
 - `npx tsc -b --noEmit` sạch, `npx vitest run` 107/107 xanh (mở rộng nội dung thuần, `content.test.ts` tự động kiểm tra cấu trúc 12 bài mới, không cần unit test riêng).
 
 Còn lại: ngân hàng tự luận mới phủ 7/67 chuyên đề (TD-06 + 6 chuyên đề đợt này); 53 chuyên đề vẫn ở 8–10 bài; thang M1–M4 vẫn chưa migrate; thanh tab đáy di động + trang phân tích lỗi FR-P08 + bản in phụ huynh (Đợt 7), đồng bộ Firebase + ô nháp + đọc đề giọng nói + âm thanh + thử thách tốc độ (Đợt 8) — chưa bắt đầu, chờ xác nhận tiếp tục.
+
+## Đợt 7: thanh tab đáy di động (UX-01/02/03), trang phân tích lỗi theo loại lỗi (FR-P08), bản in phụ huynh (UX-17) (theo yêu cầu trực tiếp của người dùng, 2026-08-14)
+
+Phạm vi giữ đúng 3 hạng mục đã hẹn ở cuối Đợt 6, không mở rộng sang toàn bộ Mục 11 (phím tắt, đọc giọng nói, ô nháp, layout 2 cột sticky, lưới nhiều cột — để lại cho lượt sau, xem README).
+
+**1. Thanh tab đáy di động (UX-01, UX-02, UX-03).** Trước đợt này `index.css` chưa có bất kỳ breakpoint responsive nào — toàn bộ layout cố định 1 cột `max-width: 720px`. Thêm:
+- `App.tsx`: tách `NAV_ITEMS` (6 mục) ra một `<nav aria-label="Điều hướng chính">` (không đổi hành vi ở `≥640px`) và thêm `<nav aria-label="Điều hướng nhanh" className="bottom-tab-bar">` mới — đúng UX-03 (mỗi mục xuất hiện ở 2 thanh, phân biệt bằng `aria-label` để test tự động khoanh vùng đúng).
+- CSS: `@media (max-width: 639px)` ẩn `.app-nav-links` (danh sách link ngang), hiện `.bottom-tab-bar` cố định `position: fixed` ở đáy màn hình (padding tôn trọng `env(safe-area-inset-bottom)` cho điện thoại có notch), `.app-shell` thêm `padding-bottom: 78px` để nội dung không bị thanh tab che (UX-02). `CoinsBadge` vẫn hiện ở thanh trên cùng (đẩy sang phải bằng `justify-content: flex-end`) vì ứng dụng không có header riêng.
+
+**2. Trang phân tích lỗi theo loại lỗi (FR-P08).** URD liệt kê 5 loại lỗi (`errorType`): sai công thức / sai đơn vị / nhầm dữ kiện / tính toán sai / không nhận ra dạng bài. Chỉ "sai đơn vị" suy ra được khách quan từ bộ chấm sẵn có (`CheckResult.status === 'wrong_unit'`) — 4 loại còn lại không thể tự động phân biệt (bộ chấm chỉ biết đúng/sai, không biết *vì sao* sai), nên thiết kế theo 2 nhánh:
+- `types/attempt.ts`: thêm `ErrorType` (5 giá trị) và `Attempt.errorType?: ErrorType` (field mở rộng thuần túy, không cần bump Dexie schema vì chỉ index theo `exerciseId`/`timestamp`/`context`, field khác lưu tự do).
+- `core/error-analysis/classify-checker-error.ts`: `classifyCheckerError(result)` suy ra `'sai_don_vi'` tự động; `SELF_REPORT_ERROR_TYPES` (4 loại còn lại) + `ERROR_TYPE_LABELS` tiếng Việt.
+- `core/error-analysis/aggregate-errors.ts`: 2 hàm thuần `aggregateErrorsByTopic`/`aggregateErrorsByType`, có unit test (4 test case, kể cả trường hợp 1 bài gắn nhiều `topicIds`).
+- `data-access`: thêm `ProgressStore.updateAttemptErrorType(exerciseId, timestamp, errorType)`, implement bằng `db.attempts.where({exerciseId, timestamp}).modify(...)`.
+- `PracticeSession.tsx`: với bài `numeric` sai do `wrong_unit`, gán `errorType` ngay lúc ghi nhận lượt làm (không hỏi lại). Với bài `numeric`/`mcq` sai vì lý do khác (`incorrect`), sau khi hiện lời giải đầy đủ, hiện thêm hàng chip "Vì sao bạn nghĩ mình đã sai? (không bắt buộc)" với 4 lựa chọn — chọn xong gọi `updateAttemptErrorType` vá vào đúng lượt làm vừa ghi. Không áp dụng cho bài `essay` (đã có luồng tự tiết lộ riêng, không có khái niệm đúng/sai khách quan).
+- `ErrorAnalysisPage.tsx` (route `/luyen-tap/phan-tich-loi`, liên kết từ `ErrorLogView`): 2 biểu đồ cột ngang (theo chuyên đề, theo loại lỗi) dựng từ `getAttempts()` + `listExercises()`/`listTopics()`, không lưu số liệu tổng hợp riêng — tính lại mỗi lần vào trang, đúng nguyên tắc "computed live, never stored" đã dùng xuyên suốt dự án (giống `mastery-engine`, `rewards`).
+
+**3. Bản in phụ huynh (UX-17).** `ParentOverview.tsx` thêm nút "🖨️ In báo cáo" (`window.print()`); các nút thao tác (nút in, nút quay lại) đánh dấu `className="no-print"`. `index.css` thêm khối `@media print` ẩn `.app-nav`, `.bottom-tab-bar`, `.no-print`, đặt nền trắng, bỏ `max-width`/`box-shadow` để trang giấy chỉ còn đúng nội dung báo cáo — đúng UX-17.
+
+- `npx tsc -b --noEmit` sạch, `npx vitest run` 111/111 xanh (+4 test mới cho `aggregate-errors.ts`).
+- Kiểm tra bằng trình duyệt thật (Playwright, script tạm đã xoá sau khi chạy): 14/14 kiểm tra qua — viewport 375px hiện đúng thanh tab đáy và ẩn thanh ngang, điều hướng bằng tab đáy hoạt động; viewport 1280px giữ nguyên hành vi cũ; làm sai một câu `numeric` trong phiên luyện tập thật hiện đúng 4 chip loại lỗi, chọn 1 chip thì ẩn đúng bảng chọn, không có lỗi console; trang phụ huynh có nút in và ẩn đúng `.app-nav` khi giả lập `media: print`; trang phân tích lỗi tải không lỗi.
+
+Còn lại: phần còn lại của Mục 11 (phím tắt `1`–`4`/`Enter`, đọc đề giọng nói UX-15/16, ô nháp UX-09, layout 2 cột sticky cho bài có hình/bảng UX-04, lưới nhiều cột cho trang danh sách UX-10); Đợt 8 (đồng bộ Firebase, âm thanh GM-07, thử thách tốc độ GM-08) — chưa bắt đầu, chờ xác nhận tiếp tục.

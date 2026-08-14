@@ -1,6 +1,7 @@
 import type {
   Attempt,
   ErrorLogEntry,
+  ErrorType,
   LearnerProfile,
   SessionOutcomeRecord,
   TestResult,
@@ -23,6 +24,10 @@ export class LocalProgressStore implements ProgressStore {
         await db.errorLog.bulkPut(updatedLog);
       }
     });
+  }
+
+  async updateAttemptErrorType(exerciseId: string, timestamp: string, errorType: ErrorType): Promise<void> {
+    await db.attempts.where({ exerciseId, timestamp }).modify({ errorType });
   }
 
   async getAttempts(filter?: AttemptFilter): Promise<Attempt[]> {

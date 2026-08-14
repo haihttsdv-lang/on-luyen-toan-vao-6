@@ -2,6 +2,7 @@ import type {
   Attempt,
   DifficultyLevel,
   ErrorLogEntry,
+  ErrorType,
   Exercise,
   LearnerProfile,
   SessionOutcomeRecord,
@@ -35,6 +36,8 @@ export interface AttemptFilter {
 export interface ProgressStore {
   addAttempt(attempt: Attempt): Promise<void>;
   getAttempts(filter?: AttemptFilter): Promise<Attempt[]>;
+  /** Gán/sửa loại lỗi cho lượt làm bài sai gần nhất khớp exerciseId+timestamp (FR-P08). */
+  updateAttemptErrorType(exerciseId: string, timestamp: string, errorType: ErrorType): Promise<void>;
 
   getErrorLog(): Promise<ErrorLogEntry[]>;
 

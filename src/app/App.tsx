@@ -14,6 +14,7 @@ import { ParentOverview } from '../modules/profile/ParentOverview';
 import { CurriculumHome } from '../modules/curriculum/CurriculumHome';
 import { SessionRunner } from '../modules/curriculum/SessionRunner';
 import { CoinsBadge } from '../modules/curriculum/CoinsBadge';
+import { ErrorAnalysisPage } from '../modules/practice/ErrorAnalysisPage';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Trang chủ', icon: '🏠', end: true },
@@ -27,13 +28,23 @@ const NAV_ITEMS = [
 export default function App() {
   return (
     <div className="app-shell">
-      <nav className="app-nav">
+      <nav className="app-nav" aria-label="Điều hướng chính">
+        <div className="app-nav-links">
+          {NAV_ITEMS.map((item) => (
+            <NavLink key={item.to} to={item.to} end={item.end}>
+              <span aria-hidden="true">{item.icon}</span> {item.label}
+            </NavLink>
+          ))}
+        </div>
+        <CoinsBadge />
+      </nav>
+      <nav className="bottom-tab-bar" aria-label="Điều hướng nhanh">
         {NAV_ITEMS.map((item) => (
           <NavLink key={item.to} to={item.to} end={item.end}>
-            <span aria-hidden="true">{item.icon}</span> {item.label}
+            <span aria-hidden="true">{item.icon}</span>
+            {item.label}
           </NavLink>
         ))}
-        <CoinsBadge />
       </nav>
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -42,6 +53,7 @@ export default function App() {
         <Route path="/luyen-tap" element={<PracticeSetup />} />
         <Route path="/luyen-tap/lam-bai" element={<PracticeSession mode="topics" />} />
         <Route path="/luyen-tap/so-loi" element={<ErrorLogView />} />
+        <Route path="/luyen-tap/phan-tich-loi" element={<ErrorAnalysisPage />} />
         <Route path="/luyen-tap/luyen-lai" element={<PracticeSession mode="error-log" />} />
         <Route path="/thi-thu" element={<TestSetup />} />
         <Route path="/thi-thu/tao-de" element={<TestCustomSetup />} />

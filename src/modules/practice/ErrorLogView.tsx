@@ -54,6 +54,11 @@ export function ErrorLogView() {
           </button>
         </>
       )}
+      <div style={{ marginTop: 12 }}>
+        <button className="btn" onClick={() => navigate('/luyen-tap/phan-tich-loi')}>
+          📊 Xem phân tích lỗi sai
+        </button>
+      </div>
     </div>
   );
 }

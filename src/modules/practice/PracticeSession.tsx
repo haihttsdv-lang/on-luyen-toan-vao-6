@@ -6,9 +6,10 @@ import { checkNumericAnswer } from '../../core/answer-checker/check-numeric';
 import type { CheckResult } from '../../core/answer-checker/types';
 import { DIAGNOSTIC_TEST_SIZE } from '../../config/thresholds';
 import { generateTest } from '../../core/test-generator/generate-test';
+import { classifyCheckerError, ERROR_TYPE_LABELS, SELF_REPORT_ERROR_TYPES } from '../../core/error-analysis/classify-checker-error';
 import { localContentStore } from '../../data-access/local/content-store';
 import { localProgressStore } from '../../data-access/local/progress-store';
-import type { AttemptContext, DifficultyLevel, Exercise, TestConfig } from '../../types';
+import type { AttemptContext, DifficultyLevel, ErrorType, Exercise, TestConfig } from '../../types';
 import { McqQuestion } from './McqQuestion';
 import { NumericQuestion } from './NumericQuestion';
 import { EssayQuestion } from './EssayQuestion';
@@ -48,6 +49,8 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
   const [essayRevealed, setEssayRevealed] = useState(false);
   const [solutionRevealed, setSolutionRevealed] = useState(false);
   const [score, setScore] = useState({ correct: 0, total: 0 });
+  const [lastWrongAttempt, setLastWrongAttempt] = useState<{ exerciseId: string; timestamp: string } | null>(null);
+  const [errorTypeChosen, setErrorTypeChosen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -89,17 +92,23 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
   const current = exercises[index];
   const attemptContext: AttemptContext = mode === 'diagnostic' ? 'diagnostic' : 'practice';
 
-  async function recordAttempt(correct: boolean, userAnswer: string) {
+  async function recordAttempt(correct: boolean, userAnswer: string, autoErrorType?: ErrorType) {
     if (!current) return;
+    const timestamp = new Date().toISOString();
     await localProgressStore.addAttempt({
       exerciseId: current.id,
       correct,
       userAnswer,
       timeSpentMs: 0,
-      timestamp: new Date().toISOString(),
+      timestamp,
       context: attemptContext,
+      errorType: autoErrorType,
     });
     setScore((s) => ({ correct: s.correct + (correct ? 1 : 0), total: s.total + 1 }));
+    if (!correct) {
+      setLastWrongAttempt({ exerciseId: current.id, timestamp });
+      setErrorTypeChosen(autoErrorType !== undefined);
+    }
   }
 
   function handleMcqSubmit(selectedIndex: number) {
@@ -118,13 +127,22 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
       // FR-M14: lỗi định dạng không tính là làm sai — cho phép nhập lại, không ghi nhận lượt làm
       return;
     }
-    void recordAttempt(checkResult.status === 'correct', raw);
+    // FR-P08: 'sai_don_vi' suy ra tự động từ bộ chấm, không cần hỏi lại học sinh
+    void recordAttempt(checkResult.status === 'correct', raw, classifyCheckerError(checkResult));
+  }
+
+  function handleSelectErrorType(type: ErrorType) {
+    if (!lastWrongAttempt) return;
+    setErrorTypeChosen(true);
+    void localProgressStore.updateAttemptErrorType(lastWrongAttempt.exerciseId, lastWrongAttempt.timestamp, type);
   }
 
   function next() {
     setResult(null);
     setEssayRevealed(false);
     setSolutionRevealed(false);
+    setLastWrongAttempt(null);
+    setErrorTypeChosen(false);
     setIndex((i) => i + 1);
   }
 
@@ -219,6 +237,20 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
         <div>
           <h4>Lời giải chi tiết</h4>
           <SolutionSteps steps={current.solutionSteps} />
+
+          {isWrong && current.answerType !== 'essay' && !errorTypeChosen && (
+            <div className="error-type-picker">
+              <p>Vì sao bạn nghĩ mình đã sai? (không bắt buộc)</p>
+              <div className="chip-row">
+                {SELF_REPORT_ERROR_TYPES.map((type) => (
+                  <button key={type} type="button" className="chip-btn" onClick={() => handleSelectErrorType(type)}>
+                    {ERROR_TYPE_LABELS[type]}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <button className="btn btn-primary" onClick={next}>
             Câu tiếp theo
           </button>

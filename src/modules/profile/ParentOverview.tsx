@@ -63,6 +63,12 @@ export function ParentOverview() {
 
   return (
     <div>
+      <div className="card no-print">
+        <button className="btn btn-primary" onClick={() => window.print()}>
+          🖨️ In báo cáo
+        </button>
+      </div>
+
       <div className="card">
         <h2>Tổng quan dành cho phụ huynh</h2>
         <p>
@@ -90,7 +96,7 @@ export function ParentOverview() {
         )}
       </div>
 
-      <div className="card">
+      <div className="card no-print">
         <button className="btn" onClick={() => navigate('/ho-so')}>
           ← Quay lại hồ sơ
         </button>
