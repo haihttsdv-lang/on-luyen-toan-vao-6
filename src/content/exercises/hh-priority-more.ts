@@ -1,4 +1,5 @@
 import type { Exercise } from '../../types';
+import { sharedBaseTriangleFigure, sharedHeightTriangleFigure } from '../figures/triangle-comparison';
 
 /** Bổ sung bài tập cho HH-03, HH-04, HH-09 (ưu tiên theo Mục 4.7 URD), hướng tới 12–15 bài/chuyên đề. */
 export const hhPriorityMoreExercises: Exercise[] = [
@@ -176,6 +177,7 @@ export const hhPriorityMoreExercises: Exercise[] = [
     topicIds: ['HH-09'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: sharedBaseTriangleFigure(12, 18, 'Tam giác nhỏ', 'Tam giác lớn'),
     statement: 'Hai tam giác chung đáy có chiều cao lần lượt $12\\,cm$ và $18\\,cm$. Tính tỉ số diện tích tam giác nhỏ so với tam giác lớn (dạng phân số tối giản).',
     solutionSteps: [{ order: 1, content: 'Chung đáy nên tỉ số diện tích bằng tỉ số chiều cao: $12:18=2:3$.', rationale: 'Áp dụng tính chất tam giác chung đáy.' }],
     numeric: { kind: 'single', acceptedValues: ['2/3'], tolerance: 0 },
@@ -185,6 +187,7 @@ export const hhPriorityMoreExercises: Exercise[] = [
     topicIds: ['HH-09'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: sharedHeightTriangleFigure('A', 'M', 'BM', 'MC'),
     statement: 'Tam giác ABC diện tích $90\\,cm^2$. M trên BC sao cho $BM=\\dfrac{2}{5}BC$ (chung chiều cao từ A). Tính diện tích tam giác ABM ($cm^2$).',
     solutionSteps: [{ order: 1, content: 'Chung chiều cao nên tỉ số diện tích bằng tỉ số đáy: $S_{ABM}=90\\times\\dfrac{2}{5}=36$.', rationale: 'Áp dụng tính chất tam giác chung chiều cao.' }],
     numeric: { kind: 'single', acceptedValues: ['36'], tolerance: 0, isInteger: true },
@@ -194,6 +197,7 @@ export const hhPriorityMoreExercises: Exercise[] = [
     topicIds: ['HH-09'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: sharedHeightTriangleFigure('D', 'P', 'EP', 'PF'),
     statement: 'Tam giác DEF có diện tích $56\\,cm^2$. P là trung điểm EF (chung chiều cao từ D). Tính diện tích tam giác DEP ($cm^2$).',
     solutionSteps: [{ order: 1, content: 'P là trung điểm nên $EP=\\dfrac{1}{2}EF$; $S_{DEP}=56\\times\\dfrac{1}{2}=28$.', rationale: 'Áp dụng tính chất tam giác chung chiều cao.' }],
     numeric: { kind: 'single', acceptedValues: ['28'], tolerance: 0, isInteger: true },
@@ -203,6 +207,7 @@ export const hhPriorityMoreExercises: Exercise[] = [
     topicIds: ['HH-09'],
     level: 'basic',
     answerType: 'mcq',
+    figure: sharedBaseTriangleFigure(8, 8, 'Tam giác XYZ', 'Tam giác XYT'),
     statement: 'Hai tam giác XYZ và XYT có chung đáy XY, chiều cao lần lượt bằng nhau (cùng $8\\,cm$). So sánh diện tích hai tam giác.',
     solutionSteps: [{ order: 1, content: 'Chung đáy và chiều cao bằng nhau nên diện tích bằng nhau.', rationale: 'Áp dụng tính chất tam giác chung đáy, chung chiều cao.' }],
     mcq: { options: ['Bằng nhau', 'XYZ lớn hơn', 'XYT lớn hơn', 'Không so sánh được'], answerIndex: 0 },
@@ -212,6 +217,7 @@ export const hhPriorityMoreExercises: Exercise[] = [
     topicIds: ['HH-09'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: sharedHeightTriangleFigure('A', 'N', 'BN', 'CN'),
     statement: 'Tam giác ABC diện tích $120\\,cm^2$. N trên BC sao cho $CN=\\dfrac{1}{4}BC$ (chung chiều cao từ A). Tính diện tích tam giác ACN ($cm^2$).',
     solutionSteps: [{ order: 1, content: 'Chung chiều cao từ A nên $S_{ACN}=120\\times\\dfrac{1}{4}=30$.', rationale: 'Áp dụng tính chất tam giác chung chiều cao, với đáy CN.' }],
     numeric: { kind: 'single', acceptedValues: ['30'], tolerance: 0, isInteger: true },
@@ -221,6 +227,7 @@ export const hhPriorityMoreExercises: Exercise[] = [
     topicIds: ['HH-09'],
     level: 'advanced',
     answerType: 'mcq',
+    figure: sharedHeightTriangleFigure('Đỉnh chung', 'Điểm chia', 'đáy 6cm', 'đáy 9cm'),
     statement: 'Hai tam giác chung chiều cao có đáy lần lượt là $6\\,cm$ và $9\\,cm$. Tỉ số diện tích tam giác nhỏ so với lớn là bao nhiêu?',
     solutionSteps: [{ order: 1, content: 'Chung chiều cao nên tỉ số diện tích bằng tỉ số đáy: $6:9=2:3$.', rationale: 'Áp dụng tính chất tam giác chung chiều cao.' }],
     mcq: { options: ['1/2', '2/3', '3/4', '5/6'], answerIndex: 1 },
@@ -230,6 +237,7 @@ export const hhPriorityMoreExercises: Exercise[] = [
     topicIds: ['HH-09'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: sharedHeightTriangleFigure('M', 'Q', 'NQ', 'QP'),
     statement: 'Tam giác MNP diện tích $84\\,cm^2$. Q trên NP sao cho $NQ:QP=3:4$ (chung chiều cao từ M). Tính diện tích tam giác MNQ ($cm^2$).',
     solutionSteps: [
       { order: 1, content: 'NQ chiếm $\\dfrac{3}{7}$ NP (tổng số phần $3+4=7$).', rationale: 'Chuyển tỉ số thành phân số của cả đoạn NP.' },
@@ -242,6 +250,7 @@ export const hhPriorityMoreExercises: Exercise[] = [
     topicIds: ['HH-09'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: sharedBaseTriangleFigure(9, 15, 'Tam giác nhỏ', 'Tam giác lớn'),
     statement: 'Hai tam giác chung đáy có tỉ số diện tích là $3:5$. Biết chiều cao tam giác nhỏ là $9\\,cm$. Tính chiều cao tam giác lớn ($cm$).',
     solutionSteps: [{ order: 1, content: 'Chung đáy nên tỉ số diện tích bằng tỉ số chiều cao: chiều cao lớn $=9\\times\\dfrac{5}{3}=15$.', rationale: 'Áp dụng tính chất tam giác chung đáy.' }],
     numeric: { kind: 'single', acceptedValues: ['15'], tolerance: 0, isInteger: true },

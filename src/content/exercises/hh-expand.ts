@@ -1,4 +1,5 @@
 import type { Exercise } from '../../types';
+import { shadedRegionFigure } from '../figures/shaded-region';
 
 /** Mở rộng bài tập cho các chuyên đề HH chưa ưu tiên, hướng tới 6–8 bài/chuyên đề. */
 export const hhExpandExercises: Exercise[] = [
@@ -211,6 +212,7 @@ export const hhExpandExercises: Exercise[] = [
     topicIds: ['HH-10'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: shadedRegionFigure(14, 9, { kind: 'square', side: 5, label: '5x5' }),
     statement: 'Hình chữ nhật dài $14\\,cm$, rộng $9\\,cm$, bên trong cắt bỏ một hình vuông cạnh $5\\,cm$ (không tô đậm). Tính diện tích phần tô đậm còn lại ($cm^2$).',
     solutionSteps: [
       { order: 1, content: 'Diện tích hình chữ nhật $=14\\times9=126\\,cm^2$.', rationale: 'Tính diện tích hình lớn.' },
@@ -224,6 +226,7 @@ export const hhExpandExercises: Exercise[] = [
     topicIds: ['HH-10'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: shadedRegionFigure(14, 14, { kind: 'circle', radius: 7, label: 'r=7' }),
     statement: 'Hình vuông cạnh $14\\,cm$ chứa một hình tròn bán kính $7\\,cm$ nội tiếp (không tô đậm). Tính diện tích phần tô đậm còn lại ($cm^2$), lấy $\\pi=3{,}14$.',
     solutionSteps: [
       { order: 1, content: 'Diện tích hình vuông $=14\\times14=196\\,cm^2$.', rationale: 'Tính diện tích hình lớn.' },
@@ -237,6 +240,7 @@ export const hhExpandExercises: Exercise[] = [
     topicIds: ['HH-10'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: shadedRegionFigure(20, 12, { kind: 'triangle', base: 8, height: 6, label: 'đáy 8, cao 6' }),
     statement: 'Hình chữ nhật dài $20\\,cm$, rộng $12\\,cm$, bên trong cắt bỏ một hình tam giác có đáy $8\\,cm$, chiều cao $6\\,cm$ (không tô đậm). Tính diện tích phần tô đậm còn lại ($cm^2$).',
     solutionSteps: [
       { order: 1, content: 'Diện tích hình chữ nhật $=20\\times12=240\\,cm^2$.', rationale: 'Tính diện tích hình lớn.' },
@@ -250,6 +254,7 @@ export const hhExpandExercises: Exercise[] = [
     topicIds: ['HH-10'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: shadedRegionFigure(25, 18, { kind: 'square', side: 6, label: 'ao 6x6' }, 'm'),
     statement: 'Một khu đất hình chữ nhật dài $25\\,m$, rộng $18\\,m$, ở giữa có một ao cá hình vuông cạnh $6\\,m$ (không tính vào phần sử dụng). Tính diện tích đất còn lại ($m^2$).',
     solutionSteps: [
       { order: 1, content: 'Diện tích khu đất $=25\\times18=450\\,m^2$.', rationale: 'Tính diện tích hình lớn.' },

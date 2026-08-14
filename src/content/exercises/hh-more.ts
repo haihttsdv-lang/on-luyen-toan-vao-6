@@ -1,4 +1,6 @@
 import type { Exercise } from '../../types';
+import { sharedBaseTriangleFigure, sharedHeightTriangleFigure } from '../figures/triangle-comparison';
+import { shadedRegionFigure } from '../figures/shaded-region';
 
 export const hhMoreExercises: Exercise[] = [
   {
@@ -227,6 +229,7 @@ export const hhMoreExercises: Exercise[] = [
     topicIds: ['HH-09'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: sharedBaseTriangleFigure(10, 15, 'Tam giác nhỏ', 'Tam giác lớn'),
     statement: 'Hai tam giác chung đáy có chiều cao lần lượt $10\\,cm$ và $15\\,cm$. Tính tỉ số diện tích tam giác nhỏ so với tam giác lớn (dạng phân số tối giản).',
     solutionSteps: [{ order: 1, content: 'Chung đáy nên tỉ số diện tích bằng tỉ số chiều cao: $10:15=2:3$.', rationale: 'Áp dụng tính chất tam giác chung đáy.' }],
     numeric: { kind: 'single', acceptedValues: ['2/3'], tolerance: 0 },
@@ -236,6 +239,7 @@ export const hhMoreExercises: Exercise[] = [
     topicIds: ['HH-09'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: sharedHeightTriangleFigure('A', 'N', 'BN', 'NC'),
     statement: 'Tam giác ABC diện tích $72\\,cm^2$. N trên BC sao cho $BN=\\dfrac{2}{3}BC$ (chung chiều cao từ A). Tính diện tích tam giác ABN ($cm^2$).',
     solutionSteps: [{ order: 1, content: 'Chung chiều cao nên tỉ số diện tích bằng tỉ số đáy: $S_{ABN}=72\\times\\dfrac{2}{3}=48$.', rationale: 'Áp dụng tính chất tam giác chung chiều cao.' }],
     numeric: { kind: 'single', acceptedValues: ['48'], tolerance: 0, isInteger: true },
@@ -245,6 +249,7 @@ export const hhMoreExercises: Exercise[] = [
     topicIds: ['HH-09'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: sharedHeightTriangleFigure('M', 'Q', 'NQ', 'QP'),
     statement: 'Tam giác MNP có diện tích $40\\,cm^2$. Q là trung điểm của NP (chung chiều cao từ M). Tính diện tích tam giác MNQ ($cm^2$).',
     solutionSteps: [{ order: 1, content: 'Q là trung điểm nên $NQ=\\dfrac{1}{2}NP$; $S_{MNQ}=40\\times\\dfrac{1}{2}=20$.', rationale: 'Áp dụng tính chất tam giác chung chiều cao.' }],
     numeric: { kind: 'single', acceptedValues: ['20'], tolerance: 0, isInteger: true },
@@ -254,6 +259,7 @@ export const hhMoreExercises: Exercise[] = [
     topicIds: ['HH-09'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: sharedBaseTriangleFigure(6, 9, 'Tam giác ABD', 'Tam giác ACD'),
     statement: 'Hai tam giác ABD và ACD có chung đáy AD. Diện tích ABD là $18\\,cm^2$ ứng với chiều cao $6\\,cm$; ACD ứng với chiều cao $9\\,cm$. Tính diện tích ACD ($cm^2$).',
     solutionSteps: [{ order: 1, content: 'Chung đáy nên $S_{ACD}:S_{ABD}=9:6$; $S_{ACD}=18\\times\\dfrac{9}{6}=27$.', rationale: 'Áp dụng tính chất tam giác chung đáy.' }],
     numeric: { kind: 'single', acceptedValues: ['27'], tolerance: 0, isInteger: true },
@@ -263,6 +269,7 @@ export const hhMoreExercises: Exercise[] = [
     topicIds: ['HH-10'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: shadedRegionFigure(15, 10, { kind: 'triangle', base: 6, height: 5, label: 'đáy 6, cao 5' }),
     statement: 'Hình chữ nhật dài $15\\,cm$, rộng $10\\,cm$, bên trong cắt bỏ một hình tam giác có đáy $6\\,cm$, chiều cao $5\\,cm$ (không tô đậm). Tính diện tích phần tô đậm còn lại ($cm^2$).',
     solutionSteps: [
       { order: 1, content: 'Diện tích hình chữ nhật $=15\\times10=150\\,cm^2$.', rationale: 'Tính diện tích hình lớn.' },
@@ -276,6 +283,7 @@ export const hhMoreExercises: Exercise[] = [
     topicIds: ['HH-10'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: shadedRegionFigure(12, 12, { kind: 'circle', radius: 6, label: 'r=6' }),
     statement: 'Hình vuông cạnh $12\\,cm$ chứa một hình tròn bán kính $6\\,cm$ nội tiếp (không tô đậm). Tính diện tích phần tô đậm còn lại ($cm^2$), lấy $\\pi=3{,}14$.',
     solutionSteps: [
       { order: 1, content: 'Diện tích hình vuông $=12\\times12=144\\,cm^2$.', rationale: 'Tính diện tích hình lớn.' },
@@ -289,6 +297,7 @@ export const hhMoreExercises: Exercise[] = [
     topicIds: ['HH-10'],
     level: 'advanced',
     answerType: 'numeric',
+    figure: shadedRegionFigure(20, 15, { kind: 'strip', width: 2, label: 'lối đi rộng 2m' }, 'm'),
     statement: 'Một mảnh vườn hình chữ nhật dài $20\\,m$, rộng $15\\,m$, ở giữa có một lối đi hình chữ nhật rộng $2\\,m$ chạy suốt chiều dài (không trồng cây). Tính diện tích phần còn lại để trồng cây ($m^2$).',
     solutionSteps: [
       { order: 1, content: 'Diện tích cả vườn $=20\\times15=300\\,m^2$.', rationale: 'Tính diện tích hình lớn.' },
