@@ -25,6 +25,7 @@ import { dhExpand2Exercises } from './dh-expand2';
 import { hhExpand2Exercises } from './hh-expand2';
 import { dlExpand2Exercises } from './dl-expand2';
 import { tdExpand2Exercises } from './td-expand2';
+import { essayPriorityExercises } from './essay-priority';
 
 export const allExercises: Exercise[] = [
   ...dh01Exercises,
@@ -53,6 +54,7 @@ export const allExercises: Exercise[] = [
   ...hhExpand2Exercises,
   ...dlExpand2Exercises,
   ...tdExpand2Exercises,
+  ...essayPriorityExercises,
 ];
 
 export { dh01Exercises, ps01Exercises, hh02Exercises };

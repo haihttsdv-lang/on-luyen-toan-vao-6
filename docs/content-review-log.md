@@ -108,3 +108,19 @@ Phát hiện và đã xử lý trong lần rà soát này:
 - TD-06-EX8/EX9 (2 bài essay mới — tổng 3 số tự nhiên liên tiếp chia hết cho 3; dấu hiệu chia hết cho 5 qua $N=10a+d$): agent viết chứng minh độc lập, khớp kết luận với lời giải mẫu.
 
 **Tổng số bài đã qua lớp 2 tính đến thời điểm này: 641/641 (535 bài các đợt trước + 106 bài đợt này) — 0 điểm lệch đáp số thực trên toàn bộ ngân hàng nội dung hiện có.**
+
+## 2026-08-14 (tiếp) — Lớp 2 cho 12 bài tự luận mới (rubric) của 6 chuyên đề phương pháp giải đặc biệt
+
+**Phạm vi**: 12 bài tự luận mới (essay, kèm `modelSolution` + rubric 3 tiêu chí/bài) bổ sung cho 6 chuyên đề "phương pháp giải đặc biệt" mà URD liệt kê riêng (Mục 4.3), trước đây chỉ có bài điền đáp số/trắc nghiệm chứ chưa có bài yêu cầu trình bày lập luận: DH-08 (chuyển động nâng cao, +2), DH-11 (giả thiết tạm, +2), DH-12 (tính ngược từ cuối, +2), DH-16 (phương pháp khử, +2), HH-09 (tỉ số diện tích tam giác, +2), HH-10 (cắt ghép hình, +2). TD-06 không bổ sung thêm vì đã có sẵn 9 bài tự luận từ trước (chuyên đề thuần lập luận/chứng minh, đã đạt ngân hàng khá đầy đủ).
+
+**Phương pháp**: 2 agent con độc lập, mỗi agent một phiên hoàn toàn mới không mang lịch sử soạn đề (nhóm 1: DH-08/11/12/16, 8 bài; nhóm 2: HH-09/10, 4 bài), tự giải lại từ đầu bằng kiến thức Toán tiểu học Việt Nam. Vì cả 12 bài đều là dạng tự luận (không có `acceptedValues` để đối chiếu tự động), đối chiếu hoàn toàn thủ công giữa kết luận + lập luận độc lập của agent với `modelSolution`/`rubric` đã lưu.
+
+**Kết quả: 12/12 bài khớp hoàn toàn — 0 điểm lệch đáp số, 0 điểm lệch lập luận.** 12/12 bài `confidence: "high"`.
+
+Điểm được agent tự ghi chú (đã xác nhận đúng, không phải lỗi):
+- DH-08-EX14 (xe đạp nghỉ giữa đường): agent nhận xét đề "cố ý" không cho quãng đường/vận tốc cụ thể vì đáp số (muộn 5 phút) không phụ thuộc các đại lượng đó — đúng như thiết kế của đề, không phải thiếu dữ kiện.
+- DH-16-EX9/EX10 (phương pháp khử): agent thử suy tiếp giá đại lượng còn lại (giá vở, giá xoài) và nhận thấy không ra số tròn — không ảnh hưởng vì đề chỉ hỏi giá đại lượng chính (bút/cam), ghi nhận như một điểm về chất lượng dữ liệu phụ, không phải lỗi đáp số.
+- HH-10-EX10 (đường chéo chia hình chữ nhật): agent lập luận bằng tiêu chuẩn tam giác bằng nhau (cạnh-góc-cạnh) thay vì chỉ nói "đối xứng", khớp với `modelSolution` đã soạn ở mức tương đương.
+- HH-10-EX11 (4 tam giác góc hình vuông): agent tự xác nhận không cần biết chính xác hình dạng phần ở giữa (có thể là hình vuông xoay 45°) vẫn tính đúng bằng phép trừ diện tích trực tiếp — khớp cách trình bày `modelSolution`.
+
+**Tổng số bài đã qua lớp 2 tính đến thời điểm này: 653/653 (641 bài các đợt trước + 12 bài đợt này) — 0 điểm lệch trên toàn bộ ngân hàng nội dung hiện có.**
