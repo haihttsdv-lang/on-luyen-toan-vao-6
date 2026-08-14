@@ -8,6 +8,7 @@ import { dhMoreTopics } from './dh-more';
 import { hhMoreTopics } from './hh-more';
 import { dlTopics } from './dl';
 import { tdTopics } from './td';
+import { v2NewTopics } from './v2-new';
 
 export const allTopics: Topic[] = [
   dh01,
@@ -19,6 +20,7 @@ export const allTopics: Topic[] = [
   ...hhMoreTopics,
   ...dlTopics,
   ...tdTopics,
+  ...v2NewTopics,
 ];
 
 export { dh01, ps01, hh02 };

@@ -18,6 +18,7 @@ import { dhExpandExercises } from './dh-expand';
 import { hhExpandExercises } from './hh-expand';
 import { dlExpandExercises } from './dl-expand';
 import { tdExpandExercises } from './td-expand';
+import { v2NewExercises } from './v2-new';
 
 export const allExercises: Exercise[] = [
   ...dh01Exercises,
@@ -39,6 +40,7 @@ export const allExercises: Exercise[] = [
   ...hhExpandExercises,
   ...dlExpandExercises,
   ...tdExpandExercises,
+  ...v2NewExercises,
 ];
 
 export { dh01Exercises, ps01Exercises, hh02Exercises };

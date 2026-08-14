@@ -66,3 +66,20 @@ Phát hiện và đã xử lý trong lần rà soát này:
 - SH-01-EX6, PS-08-EX5/EX7, PS-04-EX6, PS-07-EX5, DH-11-EX5/DH-14-EX5, HH (dùng π=3,14): agent tự kiểm chứng chéo, đều khớp lời giải mẫu, không có vấn đề.
 
 **Tổng số bài đã qua lớp 2 tính đến thời điểm này: 470/470 (304 bài các đợt trước + 166 bài đợt này) — 0 điểm lệch trên toàn bộ ngân hàng nội dung hiện có.**
+
+## 2026-08-14 — Lớp 2 cho 65 bài tập của 10 chuyên đề mới theo URD v2.0
+
+**Phạm vi**: 65 bài tập mới (SH-11: 8, SH-12: 6, PS-11: 7, DH-15: 6, DH-16: 6, DH-17: 6, HH-12: 6, DL-07: 6, DL-08: 7, TD-07: 7) cho 10 chuyên đề hoàn toàn mới bổ sung theo URD v2.0 Mục 4.2/5 (chưa từng có trong ngân hàng nội dung trước đây — không phải mở rộng chuyên đề cũ).
+
+**Phương pháp**: 3 agent con độc lập, mỗi agent một phiên hoàn toàn mới không mang lịch sử soạn đề, phụ trách một nhóm chuyên đề (nhóm 1: SH-11/12, PS-11; nhóm 2: DH-15/16/17; nhóm 3: HH-12, DL-07/08, TD-07), tự giải lại từ đầu bằng kiến thức toán tiểu học. Đối chiếu bổ sung bằng `core/answer-checker` (sau khi làm sạch đơn vị/chữ mô tả agent tự thêm vào câu trả lời, vì bộ chấm yêu cầu đúng định dạng số — 16/65 lần đối chiếu tự động ban đầu báo `format_error` chỉ vì lý do này, không phải lệch đáp số: kiểm tra thủ công xác nhận toàn bộ giá trị số đều khớp `acceptedValues` đã lưu).
+
+**Kết quả: 65/65 bài khớp hoàn toàn — 0 điểm lệch đáp số.** 64/65 bài `confidence: "high"`.
+
+Phát hiện và đã xử lý trong lần rà soát này:
+- **DL-08-EX2** (bài toán lịch): agent đối chiếu với lịch dương thực tế phát hiện đề bài ghi "Ngày 3/3/2024 là thứ Sáu" nhưng ngày 3/3/2024 trong thực tế là **Chủ Nhật** — tính toán nội tại của đề vẫn tự nhất quán (không phải lỗi công thức/đáp số theo đúng giả thiết đề cho), nhưng dùng ngày thật kèm thứ sai lệch với lịch thực tế có thể gây hiểu lầm hoặc mất niềm tin nếu học sinh tra lịch đối chiếu. **Đã sửa**: đổi giả thiết đề thành đúng thứ thực tế (Chủ Nhật), tính lại đáp án (20/3/2024 → Thứ Tư, đã xác minh lại bằng lịch JS thật). Đã kiểm tra chéo 2 bài lịch còn lại (DL-08-EX1: 1/6/2024, DL-08-EX3: 25/4/2024) đều khớp đúng lịch thực tế, không cần sửa.
+
+Điểm khác được agent tự ghi chú (đã xác nhận đúng, không phải lỗi):
+- SH-12-EX4 (dãy số viết liền, tìm chữ số thứ 15): agent nhận xét lời giải gốc trình bày hơi khó theo dõi nhưng khi tự liệt kê trực tiếp dãy số vẫn ra đúng kết quả.
+- DH-16-EX6 (giá 1 quả cam = 6.200 đồng, không tròn nghìn như các bài khác): đã kiểm tra chéo cả 2 phương trình gốc đều thỏa mãn, xác nhận đây là đặc điểm bộ số liệu, không phải lỗi.
+
+**Tổng số bài đã qua lớp 2 tính đến thời điểm này: 535/535 (470 bài các đợt trước + 65 bài đợt này) — 0 điểm lệch trên toàn bộ ngân hàng nội dung hiện có.**
