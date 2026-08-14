@@ -361,6 +361,7 @@ export const dhMoreExercises: Exercise[] = [
     topicIds: ['DH-11'],
     level: 'advanced',
     answerType: 'numeric',
+    hint: 'Thử giả sử TẤT CẢ đều là gà (loại có ít chân hơn), tính xem số chân thiếu bao nhiêu so với thực tế — phần thiếu đó chia cho mức chênh lệch chân giữa chó và gà sẽ ra số con chó.',
     statement: 'Vừa gà vừa chó có 30 con và 80 chân. Tính số con chó.',
     solutionSteps: [
       { order: 1, content: 'Giả sử tất cả là gà: $30\\times2=60$ chân; thiếu $80-60=20$ chân.', rationale: 'Giả thiết tạm toàn bộ là gà.' },
@@ -373,8 +374,12 @@ export const dhMoreExercises: Exercise[] = [
     topicIds: ['DH-11'],
     level: 'advanced',
     answerType: 'numeric',
+    hint: 'Trước tiên tìm số con chó bằng phương pháp giả thiết tạm (giả sử toàn bộ là gà rồi so sánh số chân), sau đó lấy tổng số con trừ đi số chó.',
     statement: 'Vừa gà vừa chó có 30 con và 80 chân. Tính số con gà.',
-    solutionSteps: [{ order: 1, content: 'Số chó $=10$; số gà $=30-10=20$.', rationale: 'Lấy tổng số con trừ số chó.' }],
+    solutionSteps: [
+      { order: 1, content: 'Giả sử tất cả là gà: $30\\times2=60$ chân; thiếu $80-60=20$ chân; mỗi con chó hơn gà 2 chân nên số chó $=20:2=10$.', rationale: 'Giả thiết tạm để tìm số con chó trước.' },
+      { order: 2, content: 'Số gà $=30-10=20$.', rationale: 'Lấy tổng số con trừ số chó.' },
+    ],
     numeric: { kind: 'single', acceptedValues: ['20'], tolerance: 0, isInteger: true },
   },
   {
@@ -382,6 +387,7 @@ export const dhMoreExercises: Exercise[] = [
     topicIds: ['DH-11'],
     level: 'advanced',
     answerType: 'numeric',
+    hint: 'Thử giả sử TẤT CẢ đều là xe đạp (loại có ít bánh hơn), tính xem số bánh thiếu bao nhiêu so với thực tế — phần thiếu đó chia cho mức chênh lệch bánh giữa xe ba bánh và xe đạp sẽ ra số xe ba bánh.',
     statement: 'Có một số xe đạp (2 bánh) và xe ba bánh, tất cả có 25 xe và 58 bánh xe. Tính số xe ba bánh.',
     solutionSteps: [
       { order: 1, content: 'Giả sử tất cả là xe đạp: $25\\times2=50$ bánh; thiếu $58-50=8$ bánh.', rationale: 'Giả thiết tạm toàn bộ là xe đạp.' },
@@ -394,6 +400,7 @@ export const dhMoreExercises: Exercise[] = [
     topicIds: ['DH-12'],
     level: 'advanced',
     answerType: 'numeric',
+    hint: 'Làm ngược lại các phép tính theo đúng thứ tự ngược của đề bài — phép tính nào làm SAU thì tính ngược TRƯỚC. Trừ ngược lại là cộng, chia ngược lại là nhân.',
     statement: 'Một số, sau khi trừ 7 rồi chia 4 thì được 9. Tìm số ban đầu.',
     solutionSteps: [
       { order: 1, content: 'Trước khi chia 4 để được 9, số đó là $9\\times4=36$.', rationale: 'Tính ngược phép chia thành phép nhân.' },
@@ -406,8 +413,12 @@ export const dhMoreExercises: Exercise[] = [
     topicIds: ['DH-12'],
     level: 'advanced',
     answerType: 'numeric',
+    hint: 'Làm ngược lại các phép tính theo đúng thứ tự ngược của đề bài — phép tính nào làm SAU thì tính ngược TRƯỚC. Cộng ngược lại là trừ, nhân ngược lại là chia.',
     statement: 'Một số, sau khi nhân 5 rồi cộng 6 thì được 56. Tìm số ban đầu.',
-    solutionSteps: [{ order: 1, content: '$(56-6):5=10$.', rationale: 'Tính ngược từ phép cộng đến phép nhân.' }],
+    solutionSteps: [
+      { order: 1, content: 'Trước khi cộng $6$ để được $56$, số đó là $56-6=50$.', rationale: 'Tính ngược phép cộng thành phép trừ.' },
+      { order: 2, content: 'Trước khi nhân $5$ để được $50$, số ban đầu là $50:5=10$.', rationale: 'Tính ngược phép nhân thành phép chia.' },
+    ],
     numeric: { kind: 'single', acceptedValues: ['10'], tolerance: 0, isInteger: true },
   },
   {
@@ -415,8 +426,12 @@ export const dhMoreExercises: Exercise[] = [
     topicIds: ['DH-12'],
     level: 'advanced',
     answerType: 'numeric',
+    hint: 'Làm ngược lại các phép tính theo đúng thứ tự ngược của đề bài — phép tính nào làm SAU thì tính ngược TRƯỚC. Cộng ngược lại là trừ, chia ngược lại là nhân.',
     statement: 'Một số, sau khi chia 3 rồi cộng 8 thì được 20. Tìm số ban đầu.',
-    solutionSteps: [{ order: 1, content: '$(20-8)\\times3=36$.', rationale: 'Tính ngược từ phép cộng đến phép chia.' }],
+    solutionSteps: [
+      { order: 1, content: 'Trước khi cộng $8$ để được $20$, số đó là $20-8=12$.', rationale: 'Tính ngược phép cộng thành phép trừ.' },
+      { order: 2, content: 'Trước khi chia $3$ để được $12$, số ban đầu là $12\\times3=36$.', rationale: 'Tính ngược phép chia thành phép nhân.' },
+    ],
     numeric: { kind: 'single', acceptedValues: ['36'], tolerance: 0, isInteger: true },
   },
   {

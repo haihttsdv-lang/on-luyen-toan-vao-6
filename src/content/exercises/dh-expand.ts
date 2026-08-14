@@ -153,6 +153,7 @@ export const dhExpandExercises: Exercise[] = [
     topicIds: ['DH-11'],
     level: 'advanced',
     answerType: 'numeric',
+    hint: 'Thử giả sử TẤT CẢ đều là gà (loại có ít chân hơn), tính xem số chân thiếu bao nhiêu so với thực tế — phần thiếu đó chia cho mức chênh lệch chân giữa chó và gà sẽ ra số con chó.',
     statement: 'Vừa gà vừa chó có 25 con và 70 chân. Tính số con chó.',
     solutionSteps: [
       { order: 1, content: 'Giả sử tất cả là gà: $25\\times2=50$ chân; thiếu $70-50=20$ chân.', rationale: 'Giả thiết tạm toàn bộ là gà.' },
@@ -165,8 +166,12 @@ export const dhExpandExercises: Exercise[] = [
     topicIds: ['DH-11'],
     level: 'advanced',
     answerType: 'numeric',
+    hint: 'Trước tiên tìm số con chó bằng phương pháp giả thiết tạm (giả sử toàn bộ là gà rồi so sánh số chân), sau đó lấy tổng số con trừ đi số chó.',
     statement: 'Vừa gà vừa chó có 25 con và 70 chân. Tính số con gà.',
-    solutionSteps: [{ order: 1, content: 'Số chó $=10$; số gà $=25-10=15$.', rationale: 'Lấy tổng số con trừ số chó.' }],
+    solutionSteps: [
+      { order: 1, content: 'Giả sử tất cả là gà: $25\\times2=50$ chân; thiếu $70-50=20$ chân; mỗi con chó hơn gà 2 chân nên số chó $=20:2=10$.', rationale: 'Giả thiết tạm để tìm số con chó trước.' },
+      { order: 2, content: 'Số gà $=25-10=15$.', rationale: 'Lấy tổng số con trừ số chó.' },
+    ],
     numeric: { kind: 'single', acceptedValues: ['15'], tolerance: 0, isInteger: true },
   },
   {
@@ -174,6 +179,7 @@ export const dhExpandExercises: Exercise[] = [
     topicIds: ['DH-11'],
     level: 'advanced',
     answerType: 'numeric',
+    hint: 'Thử giả sử TẤT CẢ đều là xe máy (loại có ít bánh hơn), tính xem số bánh thiếu bao nhiêu so với thực tế — phần thiếu đó chia cho mức chênh lệch bánh giữa ô tô và xe máy sẽ ra số ô tô.',
     statement: 'Có một số xe máy (2 bánh) và ô tô (4 bánh), tất cả có 18 xe và 56 bánh. Tính số ô tô.',
     solutionSteps: [
       { order: 1, content: 'Giả sử tất cả là xe máy: $18\\times2=36$ bánh; thiếu $56-36=20$ bánh.', rationale: 'Giả thiết tạm toàn bộ là xe máy.' },
@@ -186,6 +192,7 @@ export const dhExpandExercises: Exercise[] = [
     topicIds: ['DH-11'],
     level: 'advanced',
     answerType: 'numeric',
+    hint: 'Thử giả sử TẤT CẢ 32 bạn đều làm đúng, tính tổng điểm giả định rồi so sánh với tổng điểm thực tế 118 — phần chênh lệch đó chia cho mức giảm điểm khi một bạn làm sai (so với làm đúng) sẽ ra số bạn làm sai.',
     statement:
       'Một lớp có 32 học sinh làm một bài kiểm tra gồm các câu, mỗi bạn làm đúng được cộng 5 điểm, làm sai bị trừ 2 điểm (mỗi bạn chỉ tính đúng hoặc sai). Tổng điểm cả lớp là 118. Tính số bạn làm sai.',
     solutionSteps: [
@@ -202,6 +209,7 @@ export const dhExpandExercises: Exercise[] = [
     topicIds: ['DH-12'],
     level: 'advanced',
     answerType: 'numeric',
+    hint: 'Làm ngược lại các phép tính theo đúng thứ tự ngược của đề bài — phép tính nào làm SAU thì tính ngược TRƯỚC. Chia ngược lại là nhân, cộng ngược lại là trừ.',
     statement: 'Một số, sau khi cộng 8 rồi chia 3 thì được 12. Tìm số ban đầu.',
     solutionSteps: [
       { order: 1, content: 'Trước khi chia 3 để được 12, số đó là $12\\times3=36$.', rationale: 'Tính ngược phép chia thành phép nhân.' },
@@ -214,8 +222,12 @@ export const dhExpandExercises: Exercise[] = [
     topicIds: ['DH-12'],
     level: 'advanced',
     answerType: 'numeric',
+    hint: 'Làm ngược lại các phép tính theo đúng thứ tự ngược của đề bài — phép tính nào làm SAU thì tính ngược TRƯỚC. Nhân ngược lại là chia, trừ ngược lại là cộng.',
     statement: 'Một số, sau khi trừ 15 rồi nhân 4 thì được 60. Tìm số ban đầu.',
-    solutionSteps: [{ order: 1, content: '$(60:4)+15=15+15=30$.', rationale: 'Tính ngược từ phép nhân đến phép trừ.' }],
+    solutionSteps: [
+      { order: 1, content: 'Trước khi nhân $4$ để được $60$, số đó là $60:4=15$.', rationale: 'Tính ngược phép nhân thành phép chia.' },
+      { order: 2, content: 'Trước khi trừ $15$ để được $15$, số ban đầu là $15+15=30$.', rationale: 'Tính ngược phép trừ thành phép cộng.' },
+    ],
     numeric: { kind: 'single', acceptedValues: ['30'], tolerance: 0, isInteger: true },
   },
   {
@@ -223,8 +235,12 @@ export const dhExpandExercises: Exercise[] = [
     topicIds: ['DH-12'],
     level: 'advanced',
     answerType: 'numeric',
+    hint: 'Làm ngược lại các phép tính theo đúng thứ tự ngược của đề bài — phép tính nào làm SAU thì tính ngược TRƯỚC. Trừ ngược lại là cộng, nhân ngược lại là chia.',
     statement: 'Một số, sau khi nhân 4 rồi trừ 12 thì được 28. Tìm số ban đầu.',
-    solutionSteps: [{ order: 1, content: '$(28+12):4=10$.', rationale: 'Tính ngược từ phép trừ đến phép nhân.' }],
+    solutionSteps: [
+      { order: 1, content: 'Trước khi trừ $12$ để được $28$, số đó là $28+12=40$.', rationale: 'Tính ngược phép trừ thành phép cộng.' },
+      { order: 2, content: 'Trước khi nhân $4$ để được $40$, số ban đầu là $40:4=10$.', rationale: 'Tính ngược phép nhân thành phép chia.' },
+    ],
     numeric: { kind: 'single', acceptedValues: ['10'], tolerance: 0, isInteger: true },
   },
   {
@@ -232,8 +248,12 @@ export const dhExpandExercises: Exercise[] = [
     topicIds: ['DH-12'],
     level: 'advanced',
     answerType: 'numeric',
+    hint: 'Làm ngược lại các phép tính theo đúng thứ tự ngược của đề bài — phép tính nào làm SAU thì tính ngược TRƯỚC. Trừ ngược lại là cộng, chia ngược lại là nhân.',
     statement: 'Một số, sau khi chia 5 rồi trừ 3 thì được 9. Tìm số ban đầu.',
-    solutionSteps: [{ order: 1, content: '$(9+3)\\times5=60$.', rationale: 'Tính ngược từ phép trừ đến phép chia.' }],
+    solutionSteps: [
+      { order: 1, content: 'Trước khi trừ $3$ để được $9$, số đó là $9+3=12$.', rationale: 'Tính ngược phép trừ thành phép cộng.' },
+      { order: 2, content: 'Trước khi chia $5$ để được $12$, số ban đầu là $12\\times5=60$.', rationale: 'Tính ngược phép chia thành phép nhân.' },
+    ],
     numeric: { kind: 'single', acceptedValues: ['60'], tolerance: 0, isInteger: true },
   },
 

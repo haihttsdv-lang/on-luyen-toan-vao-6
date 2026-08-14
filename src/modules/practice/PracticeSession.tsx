@@ -46,6 +46,7 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
   const [index, setIndex] = useState(0);
   const [result, setResult] = useState<CheckResult | null>(null);
   const [essayRevealed, setEssayRevealed] = useState(false);
+  const [solutionRevealed, setSolutionRevealed] = useState(false);
   const [score, setScore] = useState({ correct: 0, total: 0 });
 
   useEffect(() => {
@@ -123,6 +124,7 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
   function next() {
     setResult(null);
     setEssayRevealed(false);
+    setSolutionRevealed(false);
     setIndex((i) => i + 1);
   }
 
@@ -157,7 +159,10 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
   }
 
   const locked = result !== null && result.status !== 'format_error';
-  const showSolution = locked || (current.answerType === 'essay' && essayRevealed);
+  const isWrong = locked && result?.status !== 'correct';
+  // FR-P07: bài numeric/mcq làm sai có gợi ý -> hiện gợi ý trước, hiện lời giải đầy đủ khi bấm nút
+  const showHintGate = isWrong && current.answerType !== 'essay' && !!current.hint && !solutionRevealed;
+  const showSolution = (locked && !showHintGate) || (current.answerType === 'essay' && essayRevealed);
 
   return (
     <div className="card">
@@ -197,6 +202,17 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
             </a>
           ))}
         </p>
+      )}
+
+      {showHintGate && (
+        <div className="formula-box">
+          <strong>💡 Gợi ý:</strong> <MathRenderer content={current.hint!} />
+          <div style={{ marginTop: 8 }}>
+            <button className="btn btn-primary" onClick={() => setSolutionRevealed(true)}>
+              Xem lời giải đầy đủ
+            </button>
+          </div>
+        </div>
       )}
 
       {showSolution && (
