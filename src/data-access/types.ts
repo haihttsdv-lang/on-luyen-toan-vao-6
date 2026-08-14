@@ -4,6 +4,7 @@ import type {
   ErrorLogEntry,
   Exercise,
   LearnerProfile,
+  SessionOutcomeRecord,
   TestConfig,
   TestResult,
   Topic,
@@ -46,4 +47,8 @@ export interface ProgressStore {
   getTopicProgress(topicId: string): Promise<TopicProgressRecord | undefined>;
   listTopicProgress(): Promise<TopicProgressRecord[]>;
   saveTopicProgress(record: TopicProgressRecord): Promise<void>;
+
+  /** Tự đánh giá cuối buổi học lộ trình (FR-C04) — nguồn sự thật duy nhất để tính lịch. */
+  saveSessionOutcome(record: SessionOutcomeRecord): Promise<void>;
+  listSessionOutcomes(): Promise<SessionOutcomeRecord[]>;
 }

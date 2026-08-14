@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { generateTest } from '../../core/test-generator/generate-test';
 import { shuffle } from '../../core/test-generator/shuffle';
 import { localContentStore } from '../../data-access/local/content-store';
@@ -20,8 +20,10 @@ const DEFAULT_RANDOM_COUNT = 6;
  */
 export function TestCustomSetup() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const presetTopicIds = (location.state as { presetTopicIds?: string[] } | null)?.presetTopicIds;
   const [topics, setTopics] = useState<Topic[]>([]);
-  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [selected, setSelected] = useState<Set<string>>(new Set(presetTopicIds ?? []));
   const [level, setLevel] = useState<DifficultyLevel | 'all'>('all');
   const [formatId, setFormatId] = useState(allTestConfigs[0]?.id ?? '');
   const [randomCount, setRandomCount] = useState(DEFAULT_RANDOM_COUNT);
@@ -101,6 +103,11 @@ export function TestCustomSetup() {
           Chọn một hoặc nhiều chuyên đề (hoặc bấm chọn ngẫu nhiên) để tự tạo một đề thi thử mới ngay từ ngân hàng bài
           luyện tập hiện có. Bỏ trống chuyên đề để lấy đề tổng hợp từ tất cả.
         </p>
+        {presetTopicIds && presetTopicIds.length > 0 && (
+          <p style={{ fontSize: '0.85em', color: 'var(--text-secondary)' }}>
+            Đã chọn sẵn {presetTopicIds.length} chuyên đề bạn đã học tính tới buổi kiểm tra định kỳ này.
+          </p>
+        )}
 
         <div style={{ marginBottom: 14 }}>
           <p style={{ fontWeight: 700, marginBottom: 6 }}>Định dạng đề (theo cấu trúc đề trường chất lượng cao)</p>

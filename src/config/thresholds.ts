@@ -30,3 +30,28 @@ export const MAX_RECOMMENDATIONS = 3;
 
 /** Số câu của bài kiểm tra đầu vào, phủ đều 6 nhóm chuyên đề (FR-H01). */
 export const DIAGNOSTIC_TEST_SIZE = 30;
+
+/**
+ * Cấu hình Lộ trình học 4 giai đoạn (URD v2.0 Mục 7, FR-C01→C08).
+ */
+export const CURRICULUM_CONFIG = {
+  /** Mặc định Thứ 3/5/7 (0 = Chủ nhật .. 6 = Thứ 7), đổi được ở trang Lộ trình. */
+  defaultWeeklyDays: [2, 4, 6],
+  /** Số buổi tối đa/tuần khi nén lịch theo ngày thi dự kiến (Mục 7). */
+  maxWeeklyDays: 5,
+  /** Đạt từ ngưỡng này trong bài kiểm tra đầu vào mới gợi ý bỏ qua Giai đoạn 1 (Mục 7). */
+  skipPhase1Threshold: 0.85,
+  /** Chèn 1 buổi kiểm tra định kỳ cuối mỗi N buổi đã lên lịch (xấp xỉ cuối tuần) (FR-C05). */
+  weeklyTestEveryNSessions: 3,
+  /** Chèn 1 buổi kiểm tra tháng cuối mỗi N buổi kiểm tra tuần (FR-C05). */
+  monthlyTestEveryNWeeklyTests: 4,
+} as const;
+
+/** Ánh xạ trường mục tiêu -> cấu hình đề mặc định cho Giai đoạn 4 (Mục 6.1, FR-C06). */
+export const TARGET_SCHOOL_TEST_CONFIG: Record<string, string> = {
+  archimedes: 'SPRINT',
+  'luong-the-vinh': 'STANDARD',
+  'ngoi-sao-ha-noi': 'MIXED',
+  'cau-giay': 'MIXED',
+  khac: 'STANDARD',
+};

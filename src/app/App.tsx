@@ -11,12 +11,15 @@ import { TestSession } from '../modules/mock-test/TestSession';
 import { TestHistory } from '../modules/mock-test/TestHistory';
 import { ProfileHome } from '../modules/profile/ProfileHome';
 import { ParentOverview } from '../modules/profile/ParentOverview';
+import { CurriculumHome } from '../modules/curriculum/CurriculumHome';
+import { SessionRunner } from '../modules/curriculum/SessionRunner';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Trang chủ', icon: '🏠', end: true },
   { to: '/ly-thuyet', label: 'Lý thuyết', icon: '📚' },
   { to: '/luyen-tap', label: 'Luyện tập', icon: '⚔️' },
   { to: '/thi-thu', label: 'Thi thử', icon: '🏆' },
+  { to: '/lo-trinh', label: 'Lộ trình', icon: '🗺️' },
   { to: '/ho-so', label: 'Hồ sơ', icon: '👤' },
 ];
 
@@ -42,6 +45,8 @@ export default function App() {
         <Route path="/thi-thu/tao-de" element={<TestCustomSetup />} />
         <Route path="/thi-thu/lam-bai/:configId" element={<TestSession />} />
         <Route path="/thi-thu/lich-su" element={<TestHistory />} />
+        <Route path="/lo-trinh" element={<CurriculumHome />} />
+        <Route path="/lo-trinh/buoi-hoc/:templateId" element={<SessionRunner />} />
         <Route path="/ho-so" element={<ProfileHome />} />
         <Route path="/ho-so/phu-huynh" element={<ParentOverview />} />
         <Route path="/ho-so/kiem-tra-dau-vao" element={<PracticeSession mode="diagnostic" />} />

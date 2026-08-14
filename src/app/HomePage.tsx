@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { MathRenderer } from '../components/MathRenderer';
+import { TodaySessionCard } from '../modules/curriculum/TodaySessionCard';
+import { useSchedule } from '../modules/curriculum/useSchedule';
 
 const QUESTS = [
   { to: '/ly-thuyet', icon: '📚', title: 'Lý thuyết', desc: 'Học phương pháp giải theo từng chuyên đề' },
@@ -9,6 +11,7 @@ const QUESTS = [
 
 export function HomePage() {
   const navigate = useNavigate();
+  const schedule = useSchedule();
 
   return (
     <div>
@@ -22,6 +25,8 @@ export function HomePage() {
           Ví dụ công thức: <MathRenderer content="$\dfrac{a}{b} = \dfrac{a \times k}{b \times k}$" />
         </p>
       </div>
+
+      <TodaySessionCard schedule={schedule} />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 14 }}>
         {QUESTS.map((q) => (

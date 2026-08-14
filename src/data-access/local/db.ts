@@ -1,5 +1,12 @@
 import Dexie, { type EntityTable } from 'dexie';
-import type { Attempt, ErrorLogEntry, LearnerProfile, TestResult, TopicProgressRecord } from '../../types';
+import type {
+  Attempt,
+  ErrorLogEntry,
+  LearnerProfile,
+  SessionOutcomeRecord,
+  TestResult,
+  TopicProgressRecord,
+} from '../../types';
 
 export interface AttemptRecord extends Attempt {
   id?: number;
@@ -19,6 +26,7 @@ class VnAdvisorDB extends Dexie {
   testResults!: EntityTable<TestResultRecord, 'id'>;
   profile!: EntityTable<ProfileRecord, 'id'>;
   topicProgress!: EntityTable<TopicProgressRecord, 'topicId'>;
+  sessionOutcomes!: EntityTable<SessionOutcomeRecord, 'templateId'>;
 
   constructor() {
     super('vnadvisor-toan-vao-6');
@@ -28,6 +36,10 @@ class VnAdvisorDB extends Dexie {
       testResults: '++id, configId, date',
       profile: 'id',
       topicProgress: 'topicId',
+    });
+    // v2 (URD v2.0): thêm bảng sessionOutcomes cho module Lộ trình học — additive, không phá dữ liệu cũ.
+    this.version(2).stores({
+      sessionOutcomes: 'templateId, completedAt',
     });
   }
 }

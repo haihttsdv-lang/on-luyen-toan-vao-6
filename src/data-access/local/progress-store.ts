@@ -1,4 +1,11 @@
-import type { Attempt, ErrorLogEntry, LearnerProfile, TestResult, TopicProgressRecord } from '../../types';
+import type {
+  Attempt,
+  ErrorLogEntry,
+  LearnerProfile,
+  SessionOutcomeRecord,
+  TestResult,
+  TopicProgressRecord,
+} from '../../types';
 import type { AttemptFilter, ProgressStore } from '../types';
 import { applyAttemptToErrorLog } from '../../core/error-log/apply-attempt';
 import { db } from './db';
@@ -62,6 +69,14 @@ export class LocalProgressStore implements ProgressStore {
 
   async saveTopicProgress(record: TopicProgressRecord): Promise<void> {
     await db.topicProgress.put(record);
+  }
+
+  async saveSessionOutcome(record: SessionOutcomeRecord): Promise<void> {
+    await db.sessionOutcomes.put(record);
+  }
+
+  async listSessionOutcomes(): Promise<SessionOutcomeRecord[]> {
+    return db.sessionOutcomes.toArray();
   }
 }
 
