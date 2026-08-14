@@ -5,7 +5,7 @@ import type { QuickCheckQuestion } from '../../types';
 
 interface QuickCheckQuizProps {
   questions: QuickCheckQuestion[];
-  onFinish: (scoreRatio: number) => void;
+  onFinish: (correctCount: number, totalCount: number) => void;
 }
 
 type AnswerValue = number | string;
@@ -32,7 +32,7 @@ export function QuickCheckQuiz({ questions, onFinish }: QuickCheckQuizProps) {
     }
     setCorrectness(results);
     setSubmitted(true);
-    onFinish(correctCount / questions.length);
+    onFinish(correctCount, questions.length);
   }
 
   return (

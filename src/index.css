@@ -266,6 +266,20 @@ button {
   .result-incorrect {
     animation: pop-in 0.25s ease-out;
   }
+  .solution-step-enter {
+    animation: fade-in-up 0.25s ease-out;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    transform: translateY(6px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes pop-in {

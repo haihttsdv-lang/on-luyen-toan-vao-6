@@ -47,9 +47,10 @@ export function TopicLesson() {
     };
   }, [topicId]);
 
-  async function handleQuizFinish(scoreRatio: number) {
+  async function handleQuizFinish(correctCount: number, totalCount: number) {
     if (!topicId) return;
-    const nextStatus = applyQuizResult(status, scoreRatio, QUIZ_MASTERY_THRESHOLD);
+    const scoreRatio = totalCount > 0 ? correctCount / totalCount : 0;
+    const nextStatus = applyQuizResult(status, correctCount, totalCount, QUIZ_MASTERY_THRESHOLD);
     await localProgressStore.saveTopicProgress({
       topicId,
       status: nextStatus,
@@ -57,12 +58,11 @@ export function TopicLesson() {
       updatedAt: new Date().toISOString(),
     });
     setStatus(nextStatus);
-    const percent = Math.round(scoreRatio * 100);
     const thresholdPercent = Math.round(QUIZ_MASTERY_THRESHOLD * 100);
     setQuizResultMsg(
       nextStatus === 'mastered'
-        ? `Bạn đạt ${percent}% — chuyên đề đã chuyển sang "Đã nắm"!`
-        : `Bạn đạt ${percent}% — cần từ ${thresholdPercent}% trở lên để đánh dấu "Đã nắm". Hãy ôn lại lý thuyết và thử lại.`,
+        ? `Bạn đúng ${correctCount}/${totalCount} câu — chuyên đề đã chuyển sang "Đã nắm"!`
+        : `Bạn đúng ${correctCount}/${totalCount} câu — cần từ ${thresholdPercent}% trở lên (quiz dưới 5 câu được phép sai 1 câu) để đánh dấu "Đã nắm". Hãy ôn lại lý thuyết và thử lại.`,
     );
   }
 
@@ -113,7 +113,7 @@ export function TopicLesson() {
             <p>
               <strong>Ví dụ {i + 1}:</strong> <MathRenderer content={ex.statement} />
             </p>
-            <SolutionSteps steps={ex.steps} />
+            <SolutionSteps steps={ex.steps} progressive={false} />
           </div>
         ))}
 
@@ -129,7 +129,10 @@ export function TopicLesson() {
 
       <div className="card">
         <h3>Kiểm tra nhanh</h3>
-        <p>Đạt từ {Math.round(QUIZ_MASTERY_THRESHOLD * 100)}% trở lên để đánh dấu chuyên đề "Đã nắm" (FR-L04).</p>
+        <p>
+          Đạt từ {Math.round(QUIZ_MASTERY_THRESHOLD * 100)}% trở lên để đánh dấu chuyên đề "Đã nắm" (FR-L04)
+          {topic.quickCheck.length < 5 && ' — quiz dưới 5 câu được phép sai đúng 1 câu'}.
+        </p>
         <QuickCheckQuiz questions={topic.quickCheck} onFinish={handleQuizFinish} />
         {quizResultMsg && <p style={{ marginTop: 12, fontWeight: 600 }}>{quizResultMsg}</p>}
       </div>
