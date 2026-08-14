@@ -4,6 +4,8 @@ import { ERROR_LOG_PRIORITY_THRESHOLD, MASTERY_CONFIG, MAX_RECOMMENDATIONS } fro
 import { buildRecommendations } from '../../core/mastery-engine/recommend';
 import { localProgressStore } from '../../data-access/local/progress-store';
 import type { LearnerProfile } from '../../types';
+import { BadgeCabinet } from '../curriculum/BadgeCabinet';
+import { useRewards } from '../curriculum/useRewards';
 import { CompetencyMap } from './CompetencyMap';
 import { RecommendationList } from './RecommendationList';
 import { useMasteryData } from './useMasteryData';
@@ -11,6 +13,7 @@ import { useMasteryData } from './useMasteryData';
 export function ProfileHome() {
   const navigate = useNavigate();
   const data = useMasteryData();
+  const rewards = useRewards();
   const [profile, setProfile] = useState<LearnerProfile | null | undefined>(undefined);
   const [aliasInput, setAliasInput] = useState('');
 
@@ -87,6 +90,7 @@ export function ProfileHome() {
       </div>
 
       <RecommendationList recommendations={recommendations} />
+      {!rewards.loading && <BadgeCabinet badges={rewards.badges} streak={rewards.streak} />}
       <CompetencyMap topics={data.topics} masteryByTopic={data.masteryByTopic} />
     </div>
   );

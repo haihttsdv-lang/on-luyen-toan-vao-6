@@ -13,6 +13,7 @@ import { ProfileHome } from '../modules/profile/ProfileHome';
 import { ParentOverview } from '../modules/profile/ParentOverview';
 import { CurriculumHome } from '../modules/curriculum/CurriculumHome';
 import { SessionRunner } from '../modules/curriculum/SessionRunner';
+import { CoinsBadge } from '../modules/curriculum/CoinsBadge';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Trang chủ', icon: '🏠', end: true },
@@ -32,6 +33,7 @@ export default function App() {
             <span aria-hidden="true">{item.icon}</span> {item.label}
           </NavLink>
         ))}
+        <CoinsBadge />
       </nav>
       <Routes>
         <Route path="/" element={<HomePage />} />
