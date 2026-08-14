@@ -19,6 +19,12 @@ import { hhExpandExercises } from './hh-expand';
 import { dlExpandExercises } from './dl-expand';
 import { tdExpandExercises } from './td-expand';
 import { v2NewExercises } from './v2-new';
+import { shExpand2Exercises } from './sh-expand2';
+import { psExpand2Exercises } from './ps-expand2';
+import { dhExpand2Exercises } from './dh-expand2';
+import { hhExpand2Exercises } from './hh-expand2';
+import { dlExpand2Exercises } from './dl-expand2';
+import { tdExpand2Exercises } from './td-expand2';
 
 export const allExercises: Exercise[] = [
   ...dh01Exercises,
@@ -41,6 +47,12 @@ export const allExercises: Exercise[] = [
   ...dlExpandExercises,
   ...tdExpandExercises,
   ...v2NewExercises,
+  ...shExpand2Exercises,
+  ...psExpand2Exercises,
+  ...dhExpand2Exercises,
+  ...hhExpand2Exercises,
+  ...dlExpand2Exercises,
+  ...tdExpand2Exercises,
 ];
 
 export { dh01Exercises, ps01Exercises, hh02Exercises };

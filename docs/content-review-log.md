@@ -83,3 +83,28 @@ Phát hiện và đã xử lý trong lần rà soát này:
 - DH-16-EX6 (giá 1 quả cam = 6.200 đồng, không tròn nghìn như các bài khác): đã kiểm tra chéo cả 2 phương trình gốc đều thỏa mãn, xác nhận đây là đặc điểm bộ số liệu, không phải lỗi.
 
 **Tổng số bài đã qua lớp 2 tính đến thời điểm này: 535/535 (470 bài các đợt trước + 65 bài đợt này) — 0 điểm lệch trên toàn bộ ngân hàng nội dung hiện có.**
+
+## 2026-08-14 (tiếp) — Lớp 2 cho 106 bài tập mở rộng 53 chuyên đề không ưu tiên (nâng lên 8–10 bài/chuyên đề)
+
+**Phạm vi**: 106 bài tập mới (sh-expand2 18, ps-expand2 20, dh-expand2 20, hh-expand2 18, dl-expand2 16, td-expand2 14) thêm vào 53 chuyên đề không thuộc nhóm ưu tiên Mục 4.7 URD (43 chuyên đề cũ + 10 chuyên đề mới của v2.0), đưa các chuyên đề này từ 6–8 lên 8–10 bài/chuyên đề. Có lồng bối cảnh gần gũi học sinh nam (thể thao, bóng đá, xây dựng, vũ trụ) theo đúng khuyến nghị của đợt rà soát BA/giáo viên trước đó.
+
+**Phương pháp**: giống hệt các lần trước — 3 agent con độc lập, mỗi agent một phiên hoàn toàn mới không mang lịch sử soạn đề, phụ trách một nhóm chuyên đề (nhóm 1: SH+PS 38 bài; nhóm 2: DH+HH 38 bài; nhóm 3: DL+TD 30 bài, gồm 2 bài essay TD-06-EX8/EX9), tự giải lại từ đầu. Đối chiếu tự động 104 bài `numeric`/`mcq` qua `core/answer-checker`; đối chiếu thủ công 2 bài `essay`.
+
+**Kết quả: 106/106 bài khớp hoàn toàn — 0 điểm lệch đáp số thực.** 106/106 bài `confidence: "high"`.
+
+Đối chiếu tự động ban đầu báo 55/106 lệch, nhưng kiểm tra thủ công từng bài qua `agentNote` xác nhận toàn bộ là lệch định dạng, không phải lệch đáp số:
+- Đa số (`format_error`): agent viết đáp án kèm chữ mô tả/đơn vị trong cùng chuỗi trả lời (ví dụ `"24 cái bánh"`, `"3500 m (3,5 × 1000 = 3500)"`) khiến bộ chấm không tách được token số thuần — giá trị số bên trong vẫn khớp `acceptedValues` đã lưu.
+- ~10 bài trong `hh-expand2.ts` (`wrong_unit`): agent viết đơn vị diện tích/thể tích bằng ký tự mũ Unicode thật (`cm²`, `cm³`) trong khi `unit` đã lưu là chuỗi chữ số thường (`'cm2'`/`'cm3'`) — hai chuỗi không khớp tuyệt đối theo `stripUnit()`.
+
+**Sửa theo phát hiện phụ (không phải lỗi toán, nhưng là rủi ro trải nghiệm thật)**: trường hợp `wrong_unit` ở trên cho thấy nếu học sinh thật gõ đơn vị diện tích/thể tích bằng ký tự mũ chuẩn (`cm²`) sẽ bị chấm sai dù đúng, vì `stripUnit()` so khớp chuỗi tuyệt đối, không chuẩn hóa `²`/`³` về `2`/`3`. Toàn bộ ngân hàng nội dung trước đây chưa từng đặt `unit` cho đáp án diện tích/thể tích (chỉ dùng cho chiều dài/khối lượng/thời gian/tiền — không có ký tự mũ). **Đã sửa**: bỏ trường `unit` khỏi 11 bài diện tích/thể tích trong `hh-expand2.ts` (cm²/cm³) và 3 bài trong `dl-expand2.ts` (dm²/m²/dm³), quay về đúng quy ước đã có của dự án; giữ nguyên `unit` cho các bài đo chiều dài/chu vi (không có ký tự mũ, không rủi ro).
+
+Điểm khác được agent tự ghi chú (đã xác nhận đúng, không phải lỗi):
+- PS-11-EX8: đề có một dữ kiện (tỉ lệ hao hụt 10% khi phơi khô) không cần dùng cho câu hỏi cụ thể được hỏi — không phải lỗi, chỉ là dữ kiện dư có chủ đích.
+- DH-16-EX7/EX8 (hệ phương trình theo cặp): agent kiểm chứng chéo bằng phép thế, khớp cả hai phương trình.
+- HH-01-EX8 (đếm tam giác khi vẽ 2 đường chéo hình vuông): agent liệt kê tay đủ 8 tam giác, khớp đáp số.
+- HH-12-EX7/EX8 (khối lập phương sơn mặt): agent kiểm tra tổng các loại khối (0/1/2/3 mặt sơn) cộng đúng bằng tổng khối nhỏ (125 và 60), khớp công thức đã dùng.
+- DL-08-EX8 (bài toán lịch): agent tính lại bằng công thức kiểu Zeller, xác nhận độc lập "1/9/2024 là Chủ Nhật" đúng với lịch thực tế (đã được kiểm tra trước khi soạn, theo đúng bài học rút ra từ lỗi DL-08-EX2 ở đợt trước).
+- TD-03 (nguyên lý Dirichlet): agent viết thêm chứng minh "chặt" (tại sao số lượng nhỏ hơn thì phản ví dụ tồn tại) cho các bài đã có đáp số, củng cố thêm độ chặt chẽ.
+- TD-06-EX8/EX9 (2 bài essay mới — tổng 3 số tự nhiên liên tiếp chia hết cho 3; dấu hiệu chia hết cho 5 qua $N=10a+d$): agent viết chứng minh độc lập, khớp kết luận với lời giải mẫu.
+
+**Tổng số bài đã qua lớp 2 tính đến thời điểm này: 641/641 (535 bài các đợt trước + 106 bài đợt này) — 0 điểm lệch đáp số thực trên toàn bộ ngân hàng nội dung hiện có.**
