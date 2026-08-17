@@ -10,6 +10,7 @@ import { CompetencyMap } from './CompetencyMap';
 import { RecommendationList } from './RecommendationList';
 import { SettingsCard } from './SettingsCard';
 import { useMasteryData } from './useMasteryData';
+import { SyncCard } from '../sync/SyncCard';
 
 export function ProfileHome() {
   const navigate = useNavigate();
@@ -94,6 +95,7 @@ export function ProfileHome() {
       {!rewards.loading && <BadgeCabinet badges={rewards.badges} streak={rewards.streak} />}
       <CompetencyMap topics={data.topics} masteryByTopic={data.masteryByTopic} />
       <SettingsCard />
+      <SyncCard />
     </div>
   );
 }

@@ -23,6 +23,25 @@ npm run build:standalone   # xuất ra dist-standalone/index.html
 
 Kết quả là **đúng một file `index.html`** (đã nhúng sẵn toàn bộ JS/CSS/font, không còn tham chiếu file ngoài) — có thể copy sang máy khác hoặc USB, **mở trực tiếp bằng trình duyệt (double-click, không cần cài đặt hay chạy server)**. Ứng dụng dùng `HashRouter` (URL dạng `#/thi-thu` thay vì `/thi-thu`) để điều hướng hoạt động đúng khi mở qua `file://`. Dữ liệu học tập (IndexedDB) lưu riêng theo từng trình duyệt/máy đang mở file, không đồng bộ giữa các máy.
 
+## Đồng bộ đa thiết bị (tùy chọn)
+
+Cho phép dùng chung một tiến độ học tập giữa 2 thiết bị (ví dụ máy tính ở nhà và điện thoại/máy tính bảng) mà **không cần server riêng** — dùng Firebase Firestore (gói miễn phí) làm nơi lưu trung gian. **Hoàn toàn tùy chọn**: không thiết lập thì mọi tính năng khác của ứng dụng vẫn hoạt động bình thường, chỉ không thấy mục "Đồng bộ đa thiết bị" ở trang Hồ sơ.
+
+⚠️ **Mức bảo mật**: mã đồng bộ 8 ký tự vừa là khóa tra cứu vừa đóng vai trò mật khẩu — chấp nhận được cho dữ liệu học tập không nhạy cảm ở quy mô gia đình, **không tương đương một hệ thống tài khoản thật**. Không chia sẻ mã đồng bộ cho người lạ.
+
+### Thiết lập Firebase (miễn phí, ~10 phút, không cần biết lập trình)
+
+1. **Tạo project Firebase**: vào [console.firebase.google.com](https://console.firebase.google.com) → đăng nhập bằng tài khoản Google → "Add project" → đặt tên tùy ý (ví dụ "on-luyen-toan") → bỏ qua Google Analytics (không cần) → "Create project".
+2. **Bật Firestore**: trong project vừa tạo, menu trái → "Build" → "Firestore Database" → "Create database" → chọn **"Start in production mode"** → chọn vùng gần Việt Nam (ví dụ `asia-southeast1`) → "Enable".
+3. **Bật Anonymous Auth**: menu trái → "Build" → "Authentication" → "Get started" → tab "Sign-in method" → chọn "Anonymous" → bật công tắc → "Save".
+4. **Đặt Firestore Rules**: tab "Firestore Database" → "Rules" → xóa hết nội dung mặc định, dán đúng nội dung file [`firestore.rules`](./firestore.rules) trong repo này → "Publish".
+5. **Lấy config**: menu trái → biểu tượng bánh răng ⚙️ → "Project settings" → cuộn xuống "Your apps" → bấm biểu tượng `</>` (Web) → đặt tên app tùy ý → "Register app" (**không** cần chọn Firebase Hosting) → sao chép các giá trị `apiKey`, `authDomain`, `projectId`, `appId` hiện ra.
+6. **Thêm biến môi trường**:
+   - Chạy local: copy [`.env.example`](./.env.example) thành `.env.local`, điền 4 giá trị vừa lấy được.
+   - Deploy qua GitHub Actions (README phần "Triển khai"): vào repo trên GitHub → Settings → Secrets and variables → Actions → "New repository secret" → tạo đủ 4 secret cùng tên biến (`VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_PROJECT_ID`, `VITE_FIREBASE_APP_ID`) → push lại (hoặc chạy lại workflow) để bản deploy có tính năng đồng bộ.
+
+Sau khi thiết lập xong, vào trang **Hồ sơ** của ứng dụng sẽ thấy mục "Đồng bộ đa thiết bị": bấm "Tạo mã đồng bộ mới" ở máy thứ nhất, rồi nhập đúng mã 8 ký tự đó ở mục "Liên kết với mã có sẵn" trên máy thứ hai.
+
 ## Trạng thái hiện tại
 
 - Đã xây đủ 4 trụ cột gốc: **Lý thuyết** (danh sách theo nhóm, trang bài học, kiểm tra nhanh, trạng thái Chưa học/Đang học/Đã nắm), **Luyện tập** (chọn chuyên đề, lời giải từng bước, sổ lỗi), **Thi thử** (SPRINT/STANDARD/MIXED có sẵn, **+ tạo đề tùy chỉnh** tự chọn chuyên đề/số câu/thời gian rồi sinh ngẫu nhiên từ ngân hàng bài luyện tập, đồng hồ đếm ngược, chấm tự động, lịch sử + biểu đồ xu hướng), **Hồ sơ** (bản đồ năng lực theo mức thành thạo, gợi ý tối đa 3 việc nên làm kèm lý do, kiểm tra đầu vào, trang tổng quan phụ huynh).
@@ -33,7 +52,8 @@ Kết quả là **đúng một file `index.html`** (đã nhúng sẵn toàn bộ
 - **Trang phân tích lỗi sai theo loại lỗi (FR-P08)**: sau mỗi câu `numeric`/`mcq` làm sai, có thể tự chọn (không bắt buộc) vì sao mình sai (sai công thức / nhầm dữ kiện / tính toán sai / không nhận ra dạng bài) — riêng "sai đơn vị" hệ thống tự nhận biết từ bộ chấm, không cần hỏi. Trang `/luyen-tap/phan-tich-loi` thống kê số lượt sai theo chuyên đề và theo loại lỗi bằng biểu đồ cột ngang.
 - **Thanh tab cố định ở đáy màn hình cho di động (UX-01/02/03)**: dưới 640px, thanh điều hướng ngang ẩn đi, thay bằng thanh tab 6 mục cố định ở đáy màn hình (mô hình quen thuộc trên điện thoại); trên `640px` trở lên vẫn dùng thanh điều hướng ngang như cũ.
 - **Bản in báo cáo phụ huynh (UX-17)**: nút "In báo cáo" ở trang Hồ sơ → Phụ huynh, khi in (`@media print`) tự ẩn toàn bộ thanh điều hướng và các nút thao tác, chỉ còn nội dung báo cáo trên giấy.
-- **Sao lưu & khôi phục (FR-H11)**: ở trang Hồ sơ → Cài đặt, xuất toàn bộ tiến độ (lượt làm bài, sổ lỗi, kết quả thi thử, hồ sơ, tiến độ chuyên đề, lịch sử buổi học) ra 1 file JSON, khôi phục lại từ file đó trên máy khác (có hộp xác nhận vì sẽ ghi đè dữ liệu hiện có). Cùng định dạng sẽ dùng cho Đồng bộ Firebase ở lượt sau.
+- **Sao lưu & khôi phục (FR-H11)**: ở trang Hồ sơ → Cài đặt, xuất toàn bộ tiến độ (lượt làm bài, sổ lỗi, kết quả thi thử, hồ sơ, tiến độ chuyên đề, lịch sử buổi học) ra 1 file JSON, khôi phục lại từ file đó trên máy khác (có hộp xác nhận vì sẽ ghi đè dữ liệu hiện có). Cùng định dạng dùng cho Đồng bộ Firebase bên dưới.
+- **Đồng bộ đa thiết bị (Mục 13 URD, SY-01→16)**: xem hướng dẫn thiết lập ở trên. Hoàn toàn tùy chọn (tự ẩn nếu chưa cấu hình biến môi trường, SY-14); SDK Firebase (~550KB) chỉ tải khi thật sự có mã đồng bộ (SY-13); chỉ đồng bộ ở 3 thời điểm rõ ràng — mở app, rời app (`visibilitychange`/`pagehide`), bấm "Đồng bộ ngay" — không giữ kết nối nền liên tục (SY-07→09); xung đột xử lý theo last-write-wins (SY-11).
 - **Ô nháp (UX-09)**: khu vực ghi chú tạm khi làm bài luyện tập, không lưu vào tiến độ, tự xóa khi sang câu tiếp theo.
 - **Đọc đề bằng giọng nói (UX-15/16)**: nút "🔊 Đọc đề" dùng Web Speech API (giọng tiếng Việt) ở màn hình luyện tập, tự ẩn nếu trình duyệt không hỗ trợ, tự dừng khi đổi câu hoặc rời trang.
 - **Âm thanh phản hồi (GM-07)**: tiếng báo đúng/sai sinh bằng Web Audio API (không thêm file âm thanh) khi làm bài luyện tập và trong Thử thách tốc độ, tiếng báo sai cố ý trầm và ngắn theo đúng yêu cầu URD; có công tắc bật/tắt ở trang Hồ sơ → Cài đặt.
@@ -46,4 +66,4 @@ Kết quả là **đúng một file `index.html`** (đã nhúng sẵn toàn bộ
 
 ### Còn thiếu so với URD v2.0 (chưa làm, để lượt sau — xem ADR)
 
-Thang 4 mức độ M1–M4 (hiện vẫn dùng `basic`/`advanced` — kể cả 10 chuyên đề mới vừa thêm), **Đồng bộ đa thiết bị qua Firebase (Mục 13)** — cần bạn tự tạo project Firebase thật, sẽ hướng dẫn từng bước khi làm lượt này, phần còn lại của UI/UX Mục 11 (phím tắt `1`–`4`/`Enter` khi làm bài, layout 2 cột sticky cho bài có hình/bảng, lưới nhiều cột cho trang danh sách), hình vẽ SVG cho phần lớn bài Hình học còn lại (HH-01, HH-03→HH-08, HH-11, HH-12), mở rộng bài tập lên mục tiêu đầy đủ 12–15 bài/chuyên đề, mở rộng ngân hàng tự luận sang các chuyên đề khác ngoài 7 chuyên đề "phương pháp giải đặc biệt" đã có. Stack công nghệ **giữ nguyên** React 18 + CSS thuần + Dexie/IndexedDB (không nâng cấp Tailwind v4/React 19/localStorage như URD v2.0 "chốt" — quyết định có chủ đích, xem ADR).
+Thang 4 mức độ M1–M4 (hiện vẫn dùng `basic`/`advanced` — kể cả 10 chuyên đề mới vừa thêm), phần còn lại của UI/UX Mục 11 (phím tắt `1`–`4`/`Enter` khi làm bài, layout 2 cột sticky cho bài có hình/bảng, lưới nhiều cột cho trang danh sách), hình vẽ SVG cho phần lớn bài Hình học còn lại (HH-01, HH-03→HH-08, HH-11, HH-12), mở rộng bài tập lên mục tiêu đầy đủ 12–15 bài/chuyên đề, mở rộng ngân hàng tự luận sang các chuyên đề khác ngoài 7 chuyên đề "phương pháp giải đặc biệt" đã có. Stack công nghệ **giữ nguyên** React 18 + CSS thuần + Dexie/IndexedDB (không nâng cấp Tailwind v4/React 19/localStorage như URD v2.0 "chốt" — quyết định có chủ đích, xem ADR).

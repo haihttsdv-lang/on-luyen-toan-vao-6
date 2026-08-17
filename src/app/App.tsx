@@ -16,6 +16,7 @@ import { SessionRunner } from '../modules/curriculum/SessionRunner';
 import { CoinsBadge } from '../modules/curriculum/CoinsBadge';
 import { ErrorAnalysisPage } from '../modules/practice/ErrorAnalysisPage';
 import { SpeedChallenge } from '../modules/practice/SpeedChallenge';
+import { useSyncLifecycle } from '../modules/sync/useSyncLifecycle';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Trang chủ', icon: '🏠', end: true },
@@ -27,6 +28,8 @@ const NAV_ITEMS = [
 ];
 
 export default function App() {
+  useSyncLifecycle();
+
   return (
     <div className="app-shell">
       <nav className="app-nav" aria-label="Điều hướng chính">

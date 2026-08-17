@@ -3,6 +3,7 @@ dist
 dist-ssr
 dist-standalone
 *.local
+.env
 .vscode/*
 !.vscode/extensions.json
 coverage

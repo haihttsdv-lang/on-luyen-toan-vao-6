@@ -272,3 +272,39 @@ Còn lại: phần còn lại của Mục 11 (phím tắt `1`–`4`/`Enter`, đ�
 - Kiểm tra bằng trình duyệt thật (Playwright, 2 script tạm đã xoá sau khi chạy, tổng 20/20 qua): trang Cài đặt có đủ nút xuất/khôi phục và công tắc âm thanh hoạt động; luồng xuất→đọc lại JSON→khôi phục vòng lặp đầy đủ trên dữ liệu thật không lỗi; ô nháp mở/gõ được; nút đọc đề bấm được không crash; Thử thách tốc độ vào màn hình chờ → chọn thời lượng → chạy → hiện đồng hồ đếm ngược → trả lời được 1 câu, không lỗi console ở bất kỳ bước nào.
 
 Còn lại: Đồng bộ Firebase (Mục 13, SY-01→16) — cần hướng dẫn người dùng tạo project Firebase thật trước khi triển khai; phần còn lại của Mục 11 (phím tắt `1`–`4`/`Enter`, layout 2 cột sticky UX-04, lưới nhiều cột UX-10); thang M1–M4; mở rộng bài tập lên 12–15 bài/chuyên đề — chưa bắt đầu, chờ xác nhận tiếp tục.
+
+## Đợt 8 (phần 2/2): Đồng bộ đa thiết bị qua Firebase (Mục 13, SY-01→16) (theo yêu cầu trực tiếp của người dùng, 2026-08-14)
+
+Cài `firebase` (SDK modular, v12) làm devDependency thường (không phải dev-only — cần ở runtime, nhưng chỉ tải khi thật sự dùng tới, xem SY-13 bên dưới). Bám sát đúng thứ tự và giới hạn URD đặt ra thay vì tự thiết kế lại — đặc tả này vốn "sao chép cơ chế đã vận hành thực tế ở ứng dụng Tiếng Anh tham chiếu", nên rủi ro tự sáng tạo thêm là không cần thiết.
+
+**Tách "nhẹ" khỏi "nặng" (SY-13) — quyết định kiến trúc trung tâm của toàn bộ tính năng.**
+- `core/sync/is-sync-available.ts` (`isSyncAvailable`, `readFirebaseEnvConfig`) chỉ đọc `import.meta.env.VITE_FIREBASE_*` — không `import` bất kỳ gói `firebase/*` nào.
+- `data-access/sync/sync-state.ts` chỉ đọc/ghi `localStorage` (`syncCode`, `lastSyncedAt`).
+- `data-access/sync/firebase-client.ts` là ranh giới duy nhất được phép chạm SDK Firebase, và chỉ qua `await import('firebase/app')`/`'firebase/auth'`/`'firebase/firestore'` **bên trong thân hàm** `pullFromCloud`/`pushToCloud` — không import tĩnh ở đầu file nào khác. Đã xác nhận bằng `npm run build` thật: `firebase-client-*.js` (1.68KB) và các chunk SDK Firebase (44KB/115KB/502KB, tổng khớp đúng "~550KB" URD mô tả) tách hẳn khỏi bundle chính (`index-*.js`, 1.14MB) — SDK chỉ tải khi `pullFromCloud`/`pushToCloud` thực sự được gọi.
+- `modules/sync/useSyncLifecycle.ts` (gắn ở gốc `App.tsx`) kiểm tra `isSyncAvailable() && getStoredSyncCode()` (cả hai đều "nhẹ") trước khi `import('../../data-access/sync/run-sync')` — nghĩa là với người dùng chưa từng cấu hình hoặc chưa từng liên kết mã, không một byte nào của SDK Firebase được tải, đúng SY-14.
+
+**Thời điểm đồng bộ (13.2) — implement đúng 3 thời điểm, không giữ tiến trình nền.**
+- `data-access/sync/run-sync.ts`: `syncOnOpen()` (SY-07) — kéo cloud về nếu `shouldPullFromCloud(cloud.updatedAt, lastSyncedAt)` đúng (hàm thuần trong `core/sync/should-pull.ts`, có unit test riêng), ngược lại đẩy dữ liệu máy này lên (bù phiên trước lỡ chưa đẩy); `pushOnce()` (SY-08) — chỉ đẩy, không đọc.
+- `useSyncLifecycle.ts` gọi `syncOnOpen()` khi mount, và đăng ký `visibilitychange`→`hidden` + `pagehide` (**không** `beforeunload`/`unload`, đúng URD ghi rõ lý do: nhiều trình duyệt di động bỏ qua các sự kiện đó) gọi `pushOnce()`.
+- Nút "Đồng bộ ngay" (SY-09) trong `SyncCard.tsx` gọi lại đúng `syncOnOpen()` — quyết định có chủ đích: URD viết "làm cả hai bước trên ngay lập tức" (bước mở app + bước rời app), nhưng chạy nối tiếp `syncOnOpen()` rồi luôn `pushOnce()` sau đó sẽ tốn thêm 1 lượt ghi Firestore không cần thiết mỗi lần bấm (đi ngược tinh thần SY-12 "tối đa 2 lượt ghi/phiên"); vì `syncOnOpen()` tự nó đã hoàn thành hoặc một lượt kéo hoặc một lượt đẩy tùy tình huống, chạy lại đúng hàm này khi người dùng chủ động bấm đã đáp ứng đúng ý nghĩa "đồng bộ giữa chừng" mà không lãng phí lượt ghi.
+- `pushToCloud()` trả về `updatedAt` (epoch ms) ngay tại nơi ghi, `run-sync.ts` dùng chính giá trị đó cho `setLastSyncedAt()` — tránh lệch giờ giữa đồng hồ máy khách và server Firestore.
+
+**Mã đồng bộ (SY-04, SY-05, SY-06).**
+- `core/sync/sync-code.ts`: `generateSyncCode()` sinh 8 ký tự từ bảng chữ cái đã loại `0/O`, `1/I/L`; nhận `randomFn` tùy chọn để test xác định (mặc định `Math.random`). `normalizeSyncCode()`/`isValidSyncCodeFormat()` phục vụ khi người dùng gõ tay mã ở máy thứ hai.
+- `SyncCard.tsx`: liên kết vào mã có sẵn bắt buộc qua `window.confirm()` cảnh báo đúng nguyên văn "GHI ĐÈ" trước khi gọi `syncOnOpen()` (SY-06). Luôn hiện dòng cảnh báo mức bảo mật "chấp nhận được cho dữ liệu học tập không nhạy cảm... không tương đương hệ thống tài khoản thật" (SY-15) ngay dưới các nút thao tác, không phải ẩn trong README.
+
+**Hạ tầng đi kèm.**
+- `firestore.rules` (file mới ở gốc repo, người dùng tự dán vào Firebase Console theo hướng dẫn README): `allow read, write: if request.auth != null` cho đúng 1 collection `progress_sync`, chặn tuyệt đối mọi collection khác — không cần rule theo `request.auth.uid` vì bản thân mã đồng bộ đã đóng vai trò định danh/mật khẩu (SY-04), Anonymous Auth chỉ nhằm chặn truy cập hoàn toàn ẩn danh không qua ứng dụng.
+- `.env.example` liệt kê đúng 4 biến `VITE_FIREBASE_*` cần thiết (không cần `storageBucket`/`messagingSenderId` vì chỉ dùng Firestore + Auth, không dùng Storage/Messaging). `.gitignore` thêm `.env` (bên cạnh `*.local` đã có sẵn, khớp quy ước `.env.local` của Vite).
+- `.github/workflows/deploy-pages.yml`: build job đọc 4 secret cùng tên từ GitHub Actions Secrets — để trống thì build vẫn thành công (SY-14 áp dụng cả ở bản deploy, không riêng local).
+- README: thêm mục "Đồng bộ đa thiết bị (tùy chọn)" với hướng dẫn 6 bước không cần biết lập trình (SY-16): tạo project → bật Firestore → bật Anonymous Auth → dán Firestore Rules → lấy config → thêm biến môi trường (cả local và GitHub Actions Secrets).
+
+**Xác nhận bằng trình duyệt thật (Playwright, 2 script tạm đã xoá sau khi chạy):**
+- Trạng thái chưa cấu hình (không `.env.local`): `SyncCard` hiện đúng thông báo "Chưa được cấu hình", không hiện nút tạo/liên kết mã, **0 request mạng nào tới Firebase/Firestore** — xác nhận đúng SY-14 ở mức network, không chỉ ở mức UI.
+- Trạng thái giả lập đã cấu hình (tạo tạm `.env.local` với API key giả, xoá ngay sau khi test): `SyncCard` hiện đúng nút tạo/liên kết mã + dòng cảnh báo SY-15; bấm "Tạo mã đồng bộ mới" thực sự kích hoạt `import()` động và gửi đúng 1 request thật tới `identitytoolkit.googleapis.com` (Anonymous Auth) — request bị từ chối vì key giả, nhưng ứng dụng hiện thông báo lỗi rõ ràng, không crash, không treo — xác nhận toàn bộ luồng dynamic-import + gọi SDK hoạt động đúng, chỉ còn phụ thuộc vào project Firebase thật của người dùng.
+- `npm run build` (nhiều file) và `npm run build:standalone` (1 file HTML) đều build thành công sau khi thêm `firebase`.
+- `npx tsc -b --noEmit` sạch, `npx vitest run` 134/134 xanh (+13 test mới: `sync-code` 7, `is-sync-available` 3, `should-pull` 3).
+
+**Ghi chú phát hiện ngoài phạm vi, không sửa trong đợt này:** `npm run lint` báo lỗi thiếu file cấu hình (`eslint.config.js`) — kiểm tra `git log` xác nhận file này chưa từng tồn tại trong repo, tức là lệnh lint đã "gãy" từ trước, không phải hồi quy do đợt này gây ra. Chưa sửa vì ngoài phạm vi yêu cầu của người dùng ở đợt này; cần một lượt riêng.
+
+Còn lại sau Đợt 8: người dùng cần tự tạo project Firebase thật theo hướng dẫn README rồi mới dùng được tính năng đồng bộ (không thể kiểm chứng round-trip thật với dữ liệu thật cho tới lúc đó); `npm run lint` cần được sửa cấu hình; phần còn lại của Mục 11 (phím tắt, layout 2 cột sticky, lưới nhiều cột); thang M1–M4; mở rộng bài tập lên 12–15 bài/chuyên đề — chưa bắt đầu, chờ xác nhận tiếp tục. **Toàn bộ 8 đợt của lộ trình rà soát BA/giáo viên gốc nay đã hoàn thành** (Đợt 1→8), các hạng mục còn lại ở trên là mở rộng ngoài phạm vi 8 đợt ban đầu.
