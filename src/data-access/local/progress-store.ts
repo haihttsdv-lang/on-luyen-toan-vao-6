@@ -1,5 +1,6 @@
 import type {
   Attempt,
+  BackupData,
   ErrorLogEntry,
   ErrorType,
   LearnerProfile,
@@ -82,6 +83,53 @@ export class LocalProgressStore implements ProgressStore {
 
   async listSessionOutcomes(): Promise<SessionOutcomeRecord[]> {
     return db.sessionOutcomes.toArray();
+  }
+
+  async exportAll(): Promise<BackupData> {
+    const [attempts, errorLog, testResults, profile, topicProgress, sessionOutcomes] = await Promise.all([
+      this.getAttempts(),
+      this.getErrorLog(),
+      this.getTestResults(),
+      this.getProfile(),
+      this.listTopicProgress(),
+      this.listSessionOutcomes(),
+    ]);
+    return {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      attempts,
+      errorLog,
+      testResults,
+      profile,
+      topicProgress,
+      sessionOutcomes,
+    };
+  }
+
+  async importAll(data: BackupData): Promise<void> {
+    await db.transaction(
+      'rw',
+      [db.attempts, db.errorLog, db.testResults, db.profile, db.topicProgress, db.sessionOutcomes],
+      async () => {
+        await db.attempts.clear();
+        await db.attempts.bulkAdd(data.attempts.map((a) => ({ ...a })));
+
+        await db.errorLog.clear();
+        if (data.errorLog.length > 0) await db.errorLog.bulkPut(data.errorLog);
+
+        await db.testResults.clear();
+        await db.testResults.bulkAdd(data.testResults.map((r) => ({ ...r })));
+
+        await db.profile.clear();
+        if (data.profile) await db.profile.put({ ...data.profile, id: PROFILE_ID });
+
+        await db.topicProgress.clear();
+        if (data.topicProgress.length > 0) await db.topicProgress.bulkPut(data.topicProgress);
+
+        await db.sessionOutcomes.clear();
+        if (data.sessionOutcomes.length > 0) await db.sessionOutcomes.bulkPut(data.sessionOutcomes);
+      },
+    );
   }
 }
 

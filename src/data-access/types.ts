@@ -1,5 +1,6 @@
 import type {
   Attempt,
+  BackupData,
   DifficultyLevel,
   ErrorLogEntry,
   ErrorType,
@@ -54,4 +55,9 @@ export interface ProgressStore {
   /** Tự đánh giá cuối buổi học lộ trình (FR-C04) — nguồn sự thật duy nhất để tính lịch. */
   saveSessionOutcome(record: SessionOutcomeRecord): Promise<void>;
   listSessionOutcomes(): Promise<SessionOutcomeRecord[]>;
+
+  /** Sao lưu & khôi phục toàn bộ tiến độ (FR-H11) — cùng định dạng dùng cho đồng bộ Firebase sau này (SY-02). */
+  exportAll(): Promise<BackupData>;
+  /** Ghi đè toàn bộ tiến độ hiện có bằng dữ liệu khôi phục — không merge (đúng hành vi "khôi phục"). */
+  importAll(data: BackupData): Promise<void>;
 }

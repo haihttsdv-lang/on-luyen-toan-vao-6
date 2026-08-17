@@ -5,3 +5,4 @@ export * from './test-config';
 export * from './attempt';
 export * from './mastery';
 export * from './curriculum';
+export * from './backup';

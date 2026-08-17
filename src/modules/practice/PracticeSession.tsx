@@ -7,6 +7,9 @@ import type { CheckResult } from '../../core/answer-checker/types';
 import { DIAGNOSTIC_TEST_SIZE } from '../../config/thresholds';
 import { generateTest } from '../../core/test-generator/generate-test';
 import { classifyCheckerError, ERROR_TYPE_LABELS, SELF_REPORT_ERROR_TYPES } from '../../core/error-analysis/classify-checker-error';
+import { playCorrectSound, playIncorrectSound } from '../../core/sound/sound-effects';
+import { ScratchPad } from '../../components/ScratchPad';
+import { ReadAloudButton } from '../../components/ReadAloudButton';
 import { localContentStore } from '../../data-access/local/content-store';
 import { localProgressStore } from '../../data-access/local/progress-store';
 import type { AttemptContext, DifficultyLevel, ErrorType, Exercise, TestConfig } from '../../types';
@@ -116,6 +119,7 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
     const correct = selectedIndex === current.mcq.answerIndex;
     const r: CheckResult = { status: correct ? 'correct' : 'incorrect' };
     setResult(r);
+    (correct ? playCorrectSound : playIncorrectSound)();
     void recordAttempt(correct, String(selectedIndex));
   }
 
@@ -127,6 +131,7 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
       // FR-M14: lỗi định dạng không tính là làm sai — cho phép nhập lại, không ghi nhận lượt làm
       return;
     }
+    (checkResult.status === 'correct' ? playCorrectSound : playIncorrectSound)();
     // FR-P08: 'sai_don_vi' suy ra tự động từ bộ chấm, không cần hỏi lại học sinh
     void recordAttempt(checkResult.status === 'correct', raw, classifyCheckerError(checkResult));
   }
@@ -195,7 +200,9 @@ export function PracticeSession({ mode }: PracticeSessionProps) {
       <p>
         <MathRenderer content={current.statement} />
       </p>
+      <ReadAloudButton key={current.id} text={current.statement} />
       {current.figure && <div className="figure-box" dangerouslySetInnerHTML={{ __html: current.figure }} />}
+      <ScratchPad key={`scratch-${current.id}`} />
 
       {current.answerType === 'mcq' && current.mcq && (
         <McqQuestion mcq={current.mcq} disabled={locked} onSubmit={handleMcqSubmit} />

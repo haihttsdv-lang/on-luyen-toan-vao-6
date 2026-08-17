@@ -406,6 +406,36 @@ th {
   min-width: 22px;
 }
 
+/* UX-09: khu vực nháp */
+.scratch-pad {
+  margin: 10px 0;
+}
+
+.scratch-pad-toggle {
+  font-size: 0.78em;
+  padding: 6px 12px;
+}
+
+.scratch-pad-area {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px dashed var(--border-glow);
+  background: var(--bg-panel-soft);
+  color: var(--text-primary);
+  font-family: inherit;
+  resize: vertical;
+}
+
+/* UX-15: nút đọc đề bằng giọng nói */
+.read-aloud-btn {
+  font-size: 0.78em;
+  padding: 6px 12px;
+  margin-bottom: 10px;
+}
+
 /* FR-P08: chọn loại lỗi sau khi làm sai */
 .error-type-picker {
   margin: 14px 0;

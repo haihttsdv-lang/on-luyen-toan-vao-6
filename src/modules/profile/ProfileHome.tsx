@@ -8,6 +8,7 @@ import { BadgeCabinet } from '../curriculum/BadgeCabinet';
 import { useRewards } from '../curriculum/useRewards';
 import { CompetencyMap } from './CompetencyMap';
 import { RecommendationList } from './RecommendationList';
+import { SettingsCard } from './SettingsCard';
 import { useMasteryData } from './useMasteryData';
 
 export function ProfileHome() {
@@ -92,6 +93,7 @@ export function ProfileHome() {
       <RecommendationList recommendations={recommendations} />
       {!rewards.loading && <BadgeCabinet badges={rewards.badges} streak={rewards.streak} />}
       <CompetencyMap topics={data.topics} masteryByTopic={data.masteryByTopic} />
+      <SettingsCard />
     </div>
   );
 }

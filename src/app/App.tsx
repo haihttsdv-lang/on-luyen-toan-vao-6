@@ -15,6 +15,7 @@ import { CurriculumHome } from '../modules/curriculum/CurriculumHome';
 import { SessionRunner } from '../modules/curriculum/SessionRunner';
 import { CoinsBadge } from '../modules/curriculum/CoinsBadge';
 import { ErrorAnalysisPage } from '../modules/practice/ErrorAnalysisPage';
+import { SpeedChallenge } from '../modules/practice/SpeedChallenge';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Trang chủ', icon: '🏠', end: true },
@@ -54,6 +55,7 @@ export default function App() {
         <Route path="/luyen-tap/lam-bai" element={<PracticeSession mode="topics" />} />
         <Route path="/luyen-tap/so-loi" element={<ErrorLogView />} />
         <Route path="/luyen-tap/phan-tich-loi" element={<ErrorAnalysisPage />} />
+        <Route path="/luyen-tap/thu-thach-toc-do" element={<SpeedChallenge />} />
         <Route path="/luyen-tap/luyen-lai" element={<PracticeSession mode="error-log" />} />
         <Route path="/thi-thu" element={<TestSetup />} />
         <Route path="/thi-thu/tao-de" element={<TestCustomSetup />} />

@@ -66,6 +66,14 @@ export function PracticeSetup() {
       </div>
 
       <div className="card">
+        <h3>⚡ Thử thách tốc độ</h3>
+        <p>Trả lời càng nhiều câu mức cơ bản càng tốt trong thời gian giới hạn — rèn phản xạ tính nhanh (GM-08).</p>
+        <button className="btn" onClick={() => navigate('/luyen-tap/thu-thach-toc-do')}>
+          Bắt đầu thử thách
+        </button>
+      </div>
+
+      <div className="card">
         <h3>Sổ lỗi {!errorLogLoading && `(${errorLog.length} câu)`}</h3>
         <p>
           Luyện lại những câu bạn từng làm sai (FR-P05). Câu tự động xóa khỏi sổ lỗi sau khi làm đúng 2 lần liên tiếp
